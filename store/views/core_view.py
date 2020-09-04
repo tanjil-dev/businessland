@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from store.models import *
 
 class UnderConstruction(View):
-    template = 'store/under_construction.html'
+    template = 'store/coming_soon.html'
     def get(self, request):
         context = {}
         return render(request, template_name=self.template, context=context)
