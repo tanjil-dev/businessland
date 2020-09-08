@@ -124,3 +124,20 @@ class processOrder(View):
 
         return JsonResponse('Payment complete', safe=False)
 
+class viewProduct(View):
+    template = 'store/view_product.html'
+    def get(self,request,pk):
+        product = Product.objects.get(id=pk)
+        context = {
+            'products': product
+        }
+        return render(request, template_name=self.template, context=context)
+
+class orders(View):
+    template = 'store/orders.html'
+    def get(self,request):
+        order = Order.objects.all()
+        context = {
+            'orders': order
+        }
+        return render(request, template_name=self.template, context=context)

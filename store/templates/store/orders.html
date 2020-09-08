@@ -1,0 +1,12 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+    <br><br><br><br>
+    {% for order in orders %}
+        <ul>
+            <li>{{ order.date_orderd }}</li>
+            <li>{{ order.complete }}</li>
+            <li>{{ order.transaction_id }}</li>
+        </ul>
+    {% endfor %}
+{% endblock content %}
