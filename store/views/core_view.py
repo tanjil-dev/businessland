@@ -7,6 +7,7 @@ from django.http import JsonResponse
 
 from store.models import *
 from store.utilities.utils import *
+from django.contrib.auth.forms import UserCreationForm
 
 class UnderConstruction(View):
     template = 'store/coming_soon.html'
@@ -136,8 +137,37 @@ class viewProduct(View):
 class orders(View):
     template = 'store/orders.html'
     def get(self,request):
-        order = Order.objects.all()
+        if request.user.is_authenticated:
+            order = Order.objects.all()
+        else:
+            order = []
         context = {
             'orders': order
         }
         return render(request, template_name=self.template, context=context)
+
+class loginPage(View):
+    template = 'store/login.html'
+    def get(self, request):
+        context = {}
+        return render(request, template_name=self.template, context=context)
+
+class registerPage(View):
+    template = 'store/register.html'
+    form = UserCreationForm()
+    def get(self, request):
+        context = {
+            'form': self.form
+        }
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid:
+            form.save()
+            self.message = "User Successully Created"
+        contest = {
+            'form': form,
+            'message': self.message
+        }
+        return render(request, template_name=self.template, context=contest)

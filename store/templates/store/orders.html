@@ -4,6 +4,7 @@
     <br><br><br><br>
     {% for order in orders %}
         <ul>
+            <li>{{ order.customer_id }}</li>
             <li>{{ order.date_orderd }}</li>
             <li>{{ order.complete }}</li>
             <li>{{ order.transaction_id }}</li>
