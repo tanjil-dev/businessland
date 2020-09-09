@@ -1,7 +1,7 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-
+<div class="container-fluid">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -28,25 +28,44 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+</div>
     <br>
     <br>
     <br>
-    <h1 align="center">Our Products</h1>
+    <h1 id="product" align="center">Our Products</h1>
     <br>
     <br>
     <br>
+    <div class="container">
     <div class="row">
         {% for product in products %}
         <div class="col-lg-4">
             <img class="thumbnail" src="{{ product.imageURL }}" alt="">
             <div class="box-element product">
                 <h6><strong>{{ product.name }}</strong></h6>
-                <hr>
-                <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                <a class="btn btn-outline-success add-btn" href="{% url 'product_view' product.id %}">View</a>
-                <h4 style="display: inline-block; float: right">{{ product.price|floatformat:2 }} ৳</h4>
             </div>
         </div>
         {% endfor %}
     </div>
+    </div>
+    <br><br><br><br>
+<h1 id="gallery" align="center">Our Gallery</h1>
+    <div class="container-1 container">
+
+        <div class="master">
+            <img src="https://images.unsplash.com/photo-1504700610630-ac6aba3536d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+            <i class="fas fa-chevron-left"></i>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+
+        <div class="thumbnails">
+            <img src="https://images.unsplash.com/photo-1500993855538-c6a99f437aa7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+            <img class="active" src="https://images.unsplash.com/photo-1504700610630-ac6aba3536d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+            <img src="https://images.unsplash.com/photo-1546948630-1149ea60dc86?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+            <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+        </div>
+
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock content %}
