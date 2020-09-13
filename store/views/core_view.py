@@ -6,9 +6,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from store.models import *
+from store.utilities.utils import *
+from django.contrib.auth.forms import UserCreationForm
 
 class UnderConstruction(View):
-    template = 'store/under_construction.html'
+    template = 'store/coming_soon.html'
     def get(self, request):
         context = {}
         return render(request, template_name=self.template, context=context)
@@ -16,15 +18,9 @@ class UnderConstruction(View):
 class Store(View):
     template = 'store/store.html'
     def get(self, request):
-        if request.user.is_authenticated:
-            customer = request.user.customer
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            items = order.orderitem_set.all()
-            cartItems = order.get_cart_items
-        else:
-            items = []
-            order = {'get_cart_total':0, 'get_cart_items':0, 'shipping': False}
-            cartItems = order['get_cart_items']
+        data = cartData(request)
+        cartItems = data['cartItems']
+
         products = Product.objects.all()
         context = {
             'products': products,
@@ -35,15 +31,11 @@ class Store(View):
 class Cart(View):
     template = 'store/cart.html'
     def get(self, request):
-        if request.user.is_authenticated:
-            customer = request.user.customer
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            items = order.orderitem_set.all()
-            cartItems = order.get_cart_items
-        else:
-            items = []
-            order = {'get_cart_total':0, 'get_cart_items':0, 'shipping': False}
-            cartItems = order['get_cart_items']
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
+
         context = {
             'items': items,
             'order': order,
@@ -58,15 +50,10 @@ class Checkout(View):
 
     @csrf_exempt
     def get(self, request):
-        if request.user.is_authenticated:
-            customer = request.user.customer
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            items = order.orderitem_set.all()
-            cartItems = order.get_cart_items
-        else:
-            items = []
-            order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-            cartItems = order['get_cart_items']
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
         context = {
             'items': items,
             'order': order,
@@ -114,25 +101,73 @@ class processOrder(View):
         if request.user.is_authenticated:
             customer = request.user.customer
             order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            total = float(data['form']['total'])
-            order.transaction_id = transaction_id
-            
-            if total == float(order.get_cart_total):
-                order.complete = True
-            order.save()    
-            
-            if order.shipping == True:
-                ShippingAddress.objects.create(
-                    customer=customer,
-                    order=order,
-                    address=data['shipping']['address'],
-                    city=data['shipping']['city'],
-                    state=data['shipping']['state'],
-                    zipcode=data['shipping']['zipcode'],
 
-                )
         else:
-            print('User is not logged in..')
+            customer, order = guestOrder(request, data)
+
+        total = float(data['form']['total'])
+        order.transaction_id = transaction_id
+
+        if total == float(order.get_cart_total):
+            order.complete = True
+        order.save()
+
+        if order.shipping == True:
+            ShippingAddress.objects.create(
+                customer=customer,
+                order=order,
+                address=data['shipping']['address'],
+                city=data['shipping']['city'],
+                state=data['shipping']['state'],
+                zipcode=data['shipping']['zipcode'],
+
+            )
 
         return JsonResponse('Payment complete', safe=False)
 
+class viewProduct(View):
+    template = 'store/view_product.html'
+    def get(self,request,pk):
+        product = Product.objects.get(id=pk)
+        context = {
+            'products': product
+        }
+        return render(request, template_name=self.template, context=context)
+
+class orders(View):
+    template = 'store/orders.html'
+    def get(self,request):
+        if request.user.is_authenticated:
+            order = Order.objects.all()
+        else:
+            order = []
+        context = {
+            'orders': order
+        }
+        return render(request, template_name=self.template, context=context)
+
+class loginPage(View):
+    template = 'store/login.html'
+    def get(self, request):
+        context = {}
+        return render(request, template_name=self.template, context=context)
+
+class registerPage(View):
+    template = 'store/register.html'
+    form = UserCreationForm()
+    def get(self, request):
+        context = {
+            'form': self.form
+        }
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid:
+            form.save()
+            self.message = "User Successully Created"
+        contest = {
+            'form': form,
+            'message': self.message
+        }
+        return render(request, template_name=self.template, context=contest)
