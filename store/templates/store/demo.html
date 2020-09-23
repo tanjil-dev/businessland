@@ -1,0 +1,18 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+    {% if names %}
+    <ol>
+        {% for name in names %}
+            <li>{{ name }}</li>
+        {% endfor %}
+    </ol>
+    {% endif %}
+    {% if prices %}
+    <ol>
+        {% for price in prices %}
+            <li>{{ price }}</li>
+        {% endfor %}
+    </ol>
+    {% endif %}
+{% endblock content %}
