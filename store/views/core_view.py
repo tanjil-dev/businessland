@@ -171,3 +171,19 @@ class registerPage(View):
             'message': self.message
         }
         return render(request, template_name=self.template, context=contest)
+
+#View
+class demo(View):
+    template = 'store/demo.html'
+    name = None
+    price = None
+    def get(self,request):
+        if User.is_superuser:
+            self.name = Product.objects.values('name')
+        else:
+            self.price = Product.objects.values('price')
+        context = {
+            'names': self.name,
+            'prices': self.price
+        }
+        return render(request, template_name=self.template, context=context)

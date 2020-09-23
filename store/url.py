@@ -13,4 +13,5 @@ urlpatterns = [
     path('process_order/', processOrder.as_view(), name="process_order"),
     path('login/', loginPage.as_view(), name="login"),
     path('register/', registerPage.as_view(), name="register"),
+    path('demo/', demo.as_view(), name="demo"),
 ]
