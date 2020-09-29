@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from store.models import *
+from store.form.core_form import *
 from store.utilities.utils import *
 from django.contrib.auth.forms import UserCreationForm
 
@@ -17,6 +18,19 @@ class UnderConstruction(View):
 
 class Store(View):
     template = 'store/store.html'
+    def get(self, request):
+        data = cartData(request)
+        cartItems = data['cartItems']
+
+        products = Product.objects.all()
+        context = {
+            'products': products,
+            'cartItems': cartItems
+        }
+        return render(request, template_name=self.template, context=context)
+
+class ProductView(View):
+    template = 'store/product_page.html'
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
@@ -154,7 +168,7 @@ class loginPage(View):
 
 class registerPage(View):
     template = 'store/register.html'
-    form = UserCreationForm()
+    form = CreateUserForm()
     def get(self, request):
         context = {
             'form': self.form
