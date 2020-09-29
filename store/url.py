@@ -5,6 +5,7 @@ from store.views.core_view import *
 urlpatterns = [
     path('uder-construction/', UnderConstruction.as_view(), name="under_construction"),
     path('', Store.as_view(), name="store"),
+    path('product/', ProductView.as_view(), name="product"),
     path('orders/', orders.as_view(), name="orders"),
     path('product_view/<str:pk>/', viewProduct.as_view(), name="product_view"),
     path('cart/', Cart.as_view(), name="cart"),
