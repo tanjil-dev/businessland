@@ -2,8 +2,12 @@ import json
 import datetime
 
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 
 from store.models import *
 from store.form.core_form import *
@@ -165,10 +169,31 @@ class loginPage(View):
     def get(self, request):
         context = {}
         return render(request, template_name=self.template, context=context)
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('store')
+        else:
+            messages.info(request, 'Username or password is incorrect')
+            return render(request, template_name=self.template)
+        context = {}
+        return render(request, template_name=self.template, context=context)
+
+class logOut(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
 
 class registerPage(View):
     template = 'store/register.html'
     form = CreateUserForm()
+    message = None
+    error = None
     def get(self, request):
         context = {
             'form': self.form
@@ -176,15 +201,17 @@ class registerPage(View):
         return render(request, template_name=self.template, context=context)
 
     def post(self, request):
-        form = UserCreationForm(request.POST)
-        if form.is_valid:
-            form.save()
-            self.message = "User Successully Created"
-        contest = {
-            'form': form,
-            'message': self.message
+        self.form = CreateUserForm(request.POST)
+        if self.form.is_valid():
+            self.form.save()
+            user = self.form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user)
+            return redirect('login')
+
+        context = {
+            'form': self.form
         }
-        return render(request, template_name=self.template, context=contest)
+        return render(request, template_name=self.template, context=context)
 
 #View
 class demo(View):

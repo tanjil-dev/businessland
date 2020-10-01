@@ -102,6 +102,9 @@
             </li>
         </ul>
 
+        <span style="font-size: 18px; color: #ffffff; margin-right: 20px;">Hello, {{ request.user }}</span>
+        <span><a href="{% url 'logout' %}">Logout</a></span>
+
 {#        <div class="form-inline my-2 my-lg-0">#}
 {#            <a href="#" class="btn btn-warning">Login</a>#}
 {##}
