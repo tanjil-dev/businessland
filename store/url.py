@@ -13,6 +13,7 @@ urlpatterns = [
     path('update_item/', updateItem.as_view(), name="update_item"),
     path('process_order/', processOrder.as_view(), name="process_order"),
     path('login/', loginPage.as_view(), name="login"),
+    path('logout/', logOut.as_view(), name="logout"),
     path('register/', registerPage.as_view(), name="register"),
     path('demo/', demo.as_view(), name="demo"),
 ]
