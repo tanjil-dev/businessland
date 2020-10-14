@@ -59,7 +59,7 @@
                 {% endfor %}
 
 				<h5>Items:   {{ order.get_cart_items }}</h5>
-				<h5>Total:   ${{ order.get_cart_total|floatformat:2 }}</h5>
+				<h5>Total:   Tk{{ order.get_cart_total|floatformat:2 }}</h5>
 
         </div>
     </div>
@@ -110,11 +110,6 @@
                 'zipcode': null,
             }
 
-            if(user == 'AnonymousUser'){
-                shippingInfo.name = form.name.value
-                shippingInfo.email = form.email.value
-            }
-
             if(shipping != 'False'){
                 shippingInfo.address = form.address.value
                 shippingInfo.city = form.city.value
@@ -122,16 +117,20 @@
                 shippingInfo.zipcode = form.zipcode.value
             }
 
-
-
-            var url = '/process_order/'
+            if(user == 'AnonymousUser'){
+                shippingInfo.name = form.name.value
+                shippingInfo.email = form.email.value
+            }
+            console.log('Shipping Info:', shippingInfo)
+	    	console.log('User Info:', userFormData)
+            var url = "/process_order/"
             fetch(url, {
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/json',
                     'X-CSRFToken':csrftoken,
                 },
-                body:JSON.stringify({'form':userFormData, 'shipping': shippingInfo})
+                body:JSON.stringify({'form':userFormData, 'shipping': shippingInfo}),
             })
             .then((response) => response.json())
             .then((data) => {

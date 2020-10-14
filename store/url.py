@@ -5,8 +5,12 @@ from store.views.core_view import *
 urlpatterns = [
     path('uder-construction/', UnderConstruction.as_view(), name="under_construction"),
     path('', Store.as_view(), name="store"),
+    path('admin_panel/', adminPanel.as_view(), name="admin_panel"),
+    path('customer/<str:pk>/', customerPanel.as_view(), name="customer"),
     path('product/', ProductView.as_view(), name="product"),
     path('orders/', orders.as_view(), name="orders"),
+    path('update_order/<str:pk>/', updateOrder.as_view(), name="update_order"),
+    path('delete_order/<str:pk>/', deleteOrder.as_view(), name="delete_order"),
     path('product_view/<str:pk>/', viewProduct.as_view(), name="product_view"),
     path('cart/', Cart.as_view(), name="cart"),
     path('checkout/', Checkout.as_view(), name="checkout"),

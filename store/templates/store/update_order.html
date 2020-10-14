@@ -1,0 +1,12 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+    <h3>Update Order Item</h3>
+    <h5>Product Name: {{ orderItems.product }}</h5>
+    <h5>Product Quantity: {{ orderItems.quantity }}</h5>
+    <form method="post">
+        <div class="form-group">
+            {{ form.order_status }}
+        </div>
+    </form>
+{% endblock %}
