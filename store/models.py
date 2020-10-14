@@ -25,17 +25,25 @@ def uploaded_image_file_name(instance, filename):
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING, null=True, blank=True)
     name = models.CharField(max_length=200, null=True)
+    phone = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
 
+class Tag(models.Model):
+    name = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
-    name = models.CharField(max_length=200, null=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
-    digital = models.BooleanField(default=False, null=True, blank=False)
+    name = models.CharField(max_length=200)
+    price = models.FloatField()
+    description = models.CharField(max_length=200, null=True, blank=True)
+    digital = models.BooleanField(default=False, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.name
@@ -48,12 +56,12 @@ class Product(models.Model):
             url = ''
         return url
 
-
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
     date_orderd = models.DateTimeField(auto_now_add=True)
-    complete = models.BooleanField(default=False, null=True, blank=False)
-    transaction_id = models.CharField(max_length=200, null=True)
+    complete = models.BooleanField(default=False)
+    transaction_id = models.CharField(max_length=100, null=False)
 
     def __str__(self):
         return str(self.id)
@@ -82,10 +90,18 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
+    STATUS = (
+        ('Pending', 'Pending'),
+        ('Out for delivery', 'Out for delivery'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled')
+    )
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=200, null=True, choices=STATUS, default=STATUS[0][0])
 
     @property
     def get_total(self):
@@ -94,8 +110,8 @@ class OrderItem(models.Model):
 
 
 class ShippingAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     address = models.CharField(max_length=200, null=True)
     city = models.CharField(max_length=200, null=True)
     state = models.CharField(max_length=200, null=True)

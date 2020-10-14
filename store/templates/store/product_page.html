@@ -18,7 +18,7 @@
                         </button>
 
                         <a class="btn btn-outline-success" href="{% url 'product_view' product.id %}">View</a>
-                        <h4 style="display: inline-block; float: right"><strong>Tk {{ product.price }}</strong></h4>
+                        <h4 style="display: inline-block; float: right"><strong>Tk {{ product.price|floatformat:2 }}</strong></h4>
                     </div>
                 </div>
             {% endfor %}

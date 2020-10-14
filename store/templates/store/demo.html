@@ -15,4 +15,13 @@
         {% endfor %}
     </ol>
     {% endif %}
+    {% for o in order %}
+        <ol>
+            <li>{{ o.id }}</li>
+            <li>{{ o.date_orderd }}</li>
+            <li>{{ o.complete }}</li>
+            <li>{{ o.transaction_id }}</li>
+            <li>{{ o.customer_id }}</li>
+        </ol>
+    {% endfor %}
 {% endblock content %}

@@ -25,6 +25,8 @@ class Store(View):
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
 
         products = Product.objects.all()
         context = {
@@ -92,7 +94,7 @@ class updateItem(View):
         product = Product.objects.get(id=productId)
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product, customer=customer)
 
         if action == 'add':
             orderItem.quantity = (orderItem.quantity + 1)
@@ -126,7 +128,7 @@ class processOrder(View):
         total = float(data['form']['total'])
         order.transaction_id = transaction_id
 
-        if total == float(order.get_cart_total):
+        if total == order.get_cart_total:
             order.complete = True
         order.save()
 
@@ -213,6 +215,67 @@ class registerPage(View):
         }
         return render(request, template_name=self.template, context=context)
 
+class adminPanel(View):
+    template_name = 'store/admin.html'
+    def get(self, request):
+        orderItems = OrderItem.objects.all()
+        customers = Customer.objects.all()
+
+        total_customer = customers.count()
+        total_orders = orderItems.count()
+
+        delivered = orderItems.filter(status='Delivered').count()
+        pending = orderItems.filter(status='Pending').count()
+
+        context = {
+            'orderItems': orderItems,
+            'customers': customers,
+            'total_customer': total_customer,
+            'total_orders': total_orders,
+            'delivered': delivered,
+            'pending': pending
+        }
+        return render(request, template_name=self.template_name, context=context)
+
+    def post(self, request):
+        return render(request, template_name=self.template_name)
+
+class customerPanel(View):
+    template_name = 'store/customer.html'
+    def get(self, request, pk):
+        customer = Customer.objects.get(id=pk)
+
+        orders = customer.orderitem_set.all()
+        order_count = orders.count()
+        context = {
+            'customer': customer,
+            'orders': orders,
+            'order_count': order_count
+        }
+        return render(request, template_name=self.template_name, context=context)
+
+class updateOrder(View):
+    form = UpdateOrderForm
+    template_name = 'store/update_order.html'
+    def get(self, request, pk):
+        orderItems = OrderItem.objects.get(id=pk)
+        context = {
+            'orderItems': orderItems,
+            'form': UpdateOrderForm
+        }
+        return render(request, template_name=self.template_name, context=context)
+
+class deleteOrder(View):
+    form = UpdateOrderForm
+    template_name = 'store/delete_order.html'
+    def get(self, request, pk):
+        orderItems = OrderItem.objects.get(id=pk)
+        context = {
+            'orderItems': orderItems,
+            'form': UpdateOrderForm
+        }
+        return render(request, template_name=self.template_name, context=context)
+
 #View
 class demo(View):
     template = 'store/demo.html'
@@ -223,8 +286,10 @@ class demo(View):
             self.name = Product.objects.values('name')
         else:
             self.price = Product.objects.values('price')
+        order = Order.objects.all()
         context = {
             'names': self.name,
-            'prices': self.price
+            'prices': self.price,
+            'order': order
         }
         return render(request, template_name=self.template, context=context)
