@@ -8,20 +8,23 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-
 from store.models import *
 from store.form.core_form import *
 from store.utilities.utils import *
 from django.contrib.auth.forms import UserCreationForm
 
+
 class UnderConstruction(View):
     template = 'store/coming_soon.html'
+
     def get(self, request):
         context = {}
         return render(request, template_name=self.template, context=context)
 
+
 class Store(View):
     template = 'store/store.html'
+
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
@@ -35,8 +38,10 @@ class Store(View):
         }
         return render(request, template_name=self.template, context=context)
 
+
 class ProductView(View):
     template = 'store/product_page.html'
+
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
@@ -48,8 +53,10 @@ class ProductView(View):
         }
         return render(request, template_name=self.template, context=context)
 
+
 class Cart(View):
     template = 'store/cart.html'
+
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
@@ -61,7 +68,7 @@ class Cart(View):
             'order': order,
             'cartItems': cartItems
         }
-        return render(request, template_name=self.template , context=context)
+        return render(request, template_name=self.template, context=context)
 
 
 class Checkout(View):
@@ -80,6 +87,7 @@ class Checkout(View):
             'cartItems': cartItems
         }
         return render(request, template_name=self.template, context=context)
+
 
 class updateItem(View):
     def post(self, request):
@@ -103,21 +111,28 @@ class updateItem(View):
 
         orderItem.save()
 
-        if orderItem.quantity <=0:
+        if orderItem.quantity <= 0:
             orderItem.delete()
 
         return JsonResponse('Item was added', safe=False)
 
 
-
 class processOrder(View):
+    template_name = 'store/order_form.html'
+    form = OrderForm()
     from django.views.decorators.csrf import csrf_exempt
+
+    def get(self, request):
+        context = {
+            'form': self.form
+        }
+        return render(request, template_name=self.template_name, context=context)
 
     @csrf_exempt
     def post(self, request):
         transaction_id = datetime.datetime.now().timestamp()
         data = json.loads(request.body)
-        
+
         if request.user.is_authenticated:
             customer = request.user.customer
             order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -145,18 +160,22 @@ class processOrder(View):
 
         return JsonResponse('Payment complete', safe=False)
 
+
 class viewProduct(View):
     template = 'store/view_product.html'
-    def get(self,request,pk):
+
+    def get(self, request, pk):
         product = Product.objects.get(id=pk)
         context = {
             'products': product
         }
         return render(request, template_name=self.template, context=context)
 
+
 class orders(View):
     template = 'store/orders.html'
-    def get(self,request):
+
+    def get(self, request):
         if request.user.is_authenticated:
             order = Order.objects.all()
         else:
@@ -166,17 +185,20 @@ class orders(View):
         }
         return render(request, template_name=self.template, context=context)
 
+
 class loginPage(View):
     template = 'store/login.html'
+
     def get(self, request):
         context = {}
         return render(request, template_name=self.template, context=context)
+
     def post(self, request):
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
+
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None:
             login(request, user)
             return redirect('store')
@@ -186,16 +208,19 @@ class loginPage(View):
         context = {}
         return render(request, template_name=self.template, context=context)
 
+
 class logOut(View):
     def get(self, request):
         logout(request)
         return redirect('login')
+
 
 class registerPage(View):
     template = 'store/register.html'
     form = CreateUserForm()
     message = None
     error = None
+
     def get(self, request):
         context = {
             'form': self.form
@@ -215,8 +240,10 @@ class registerPage(View):
         }
         return render(request, template_name=self.template, context=context)
 
+
 class adminPanel(View):
     template_name = 'store/admin.html'
+
     def get(self, request):
         orderItems = OrderItem.objects.all()
         customers = Customer.objects.all()
@@ -240,8 +267,10 @@ class adminPanel(View):
     def post(self, request):
         return render(request, template_name=self.template_name)
 
+
 class customerPanel(View):
     template_name = 'store/customer.html'
+
     def get(self, request, pk):
         customer = Customer.objects.get(id=pk)
 
@@ -254,34 +283,46 @@ class customerPanel(View):
         }
         return render(request, template_name=self.template_name, context=context)
 
-class updateOrder(View):
-    form = UpdateOrderForm
+
+def updateOrder(request, pk):
     template_name = 'store/update_order.html'
-    def get(self, request, pk):
-        orderItems = OrderItem.objects.get(id=pk)
-        context = {
-            'orderItems': orderItems,
-            'form': UpdateOrderForm
-        }
-        return render(request, template_name=self.template_name, context=context)
+    orderItems = OrderItem.objects.get(id=pk)
+    form = OrderForm(instance=orderItems)
 
-class deleteOrder(View):
-    form = UpdateOrderForm
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=orderItems)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_panel')
+
+    context = {
+        'orderItems': orderItems,
+        'form': form
+    }
+    return render(request, template_name=template_name, context=context)
+
+
+def deleteOrder(request, pk):
     template_name = 'store/delete_order.html'
-    def get(self, request, pk):
-        orderItems = OrderItem.objects.get(id=pk)
-        context = {
-            'orderItems': orderItems,
-            'form': UpdateOrderForm
-        }
-        return render(request, template_name=self.template_name, context=context)
+    orderItems = OrderItem.objects.get(id=pk)
+    
+    if request.method == "POST":
+        orderItems.delete()
+        return redirect('admin_panel')
+    context = {
+        'orderItems': orderItems,
+        'form': UpdateOrderForm
+    }
+    return render(request, template_name=template_name, context=context)
 
-#View
+
+# View
 class demo(View):
     template = 'store/demo.html'
     name = None
     price = None
-    def get(self,request):
+
+    def get(self, request):
         if User.is_superuser:
             self.name = Product.objects.values('name')
         else:

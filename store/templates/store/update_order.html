@@ -1,12 +1,26 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-    <h3>Update Order Item</h3>
-    <h5>Product Name: {{ orderItems.product }}</h5>
-    <h5>Product Quantity: {{ orderItems.quantity }}</h5>
-    <form method="post">
-        <div class="form-group">
-            {{ form.order_status }}
+    <div align="center">
+        <h3>Update Order Item</h3>
+        <h5>Customer name: {{ orderItems.customer | default_if_none:'' }}</h5>
+        <h5>Customer Phone: {{ orderItems.customer.phone | default_if_none:'' }}</h5>
+        <h5>Product Name: {{ orderItems.product | default_if_none:'' }}</h5>
+        <h5>Date Added: {{ orderItems.date_added | default_if_none:'' }}</h5>
+        <h5>Quantity: {{ orderItems.quantity | default_if_none:'' }}</h5>
+        <h5>Order Status: {{ orderItems.status | default_if_none:'' }}</h5>
+        <div class="row" align="center">
+            <div class="col-lg-12">
+                <div class="carf card-body">
+                    <form method="post" action="">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            {{ form.status }}
+                            <input class="btn btn-primary" type="submit" name="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 {% endblock %}
