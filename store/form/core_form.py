@@ -15,7 +15,7 @@ class CreateUserForm(UserCreationForm):
 class UpdateOrderForm(forms.Form):
     STATUS = (
         ('Pending', 'Pending'),
-        ('Out for deleivery', 'Out for delivery'),
+        ('Out for delivery', 'Out for delivery'),
         ('Delivered', 'Delivered'),
         ('Cancelled', 'Cancelled')
     )
@@ -24,3 +24,7 @@ class UpdateOrderForm(forms.Form):
                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'issue-status'}),
                                      label='place your status')
 
+class OrderForm(ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'

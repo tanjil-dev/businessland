@@ -549,20 +549,43 @@ html, body {
 /*dropdown*/
 
 .dropdown {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1;
 }
 
 .dropdown:hover .dropdown-content {
-  display: block;
+    display: block;
+}
+
+/*total*/
+
+#logo {
+}
+
+body {
+    background-color: #ebeff5;
+}
+
+
+#total-orders {
+    background-color: #4cb4c7;
+}
+
+
+#orders-delivered {
+    background-color: #7abecc;
+}
+
+#orders-pending {
+    background-color: #7CD1C0;
 }
