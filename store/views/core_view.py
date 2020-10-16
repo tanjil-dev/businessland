@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from store.models import *
 from store.form.core_form import *
@@ -190,8 +191,11 @@ class loginPage(View):
     template = 'store/login.html'
 
     def get(self, request):
-        context = {}
-        return render(request, template_name=self.template, context=context)
+        if request.user.is_authenticated:
+            return redirect('admin_panel')
+        else:
+            context = {}
+            return render(request, template_name=self.template, context=context)
 
     def post(self, request):
         username = request.POST.get('username')
@@ -201,7 +205,7 @@ class loginPage(View):
 
         if user is not None:
             login(request, user)
-            return redirect('store')
+            return redirect('admin_panel')
         else:
             messages.info(request, 'Username or password is incorrect')
             return render(request, template_name=self.template)
@@ -222,9 +226,12 @@ class registerPage(View):
     error = None
 
     def get(self, request):
-        context = {
-            'form': self.form
-        }
+        if request.user.is_authenticated:
+            return redirect('admin_panel')
+        else:
+            context = {
+                'form': self.form
+            }
         return render(request, template_name=self.template, context=context)
 
     def post(self, request):
@@ -244,6 +251,7 @@ class registerPage(View):
 class adminPanel(View):
     template_name = 'store/admin.html'
 
+    @method_decorator(login_required(login_url='login'))
     def get(self, request):
         orderItems = OrderItem.objects.all()
         customers = Customer.objects.all()
