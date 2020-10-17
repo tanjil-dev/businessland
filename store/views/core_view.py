@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from store.models import *
+from store.filters import OrderFilter
 from store.form.core_form import *
 from store.utilities.utils import *
 from django.contrib.auth.forms import UserCreationForm
@@ -284,10 +285,13 @@ class customerPanel(View):
 
         orders = customer.orderitem_set.all()
         order_count = orders.count()
+        myFilter = OrderFilter(request.GET, queryset=orders)
+        orders = myFilter.qs
         context = {
             'customer': customer,
             'orders': orders,
-            'order_count': order_count
+            'order_count': order_count,
+            'myFilter': myFilter
         }
         return render(request, template_name=self.template_name, context=context)
 

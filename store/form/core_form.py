@@ -27,4 +27,4 @@ class UpdateOrderForm(forms.Form):
 class OrderForm(ModelForm):
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['status',]
