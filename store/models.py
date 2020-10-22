@@ -31,9 +31,21 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
-class Tag(models.Model):
+class Title(models.Model):
     name = models.CharField(max_length=200, null=True)
+    def __str__(self):
+        return self.name
 
+class Category(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    title = models.ForeignKey(Title, on_delete=models.SET_NULL, blank=True, null=True)
+    def __str__(self):
+        return self.name
+
+class Brand(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
+    title = models.ForeignKey(Title, on_delete=models.SET_NULL, blank=True, null=True)
     def __str__(self):
         return self.name
 
@@ -43,7 +55,7 @@ class Product(models.Model):
     description = models.CharField(max_length=200, null=True, blank=True)
     digital = models.BooleanField(default=False, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
-    tags = models.ManyToManyField(Tag)
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.name

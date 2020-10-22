@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/product_page.css' %}">
     <script type="text/javascript">
         var user = '{{ request.user }}'
 
@@ -65,74 +66,2188 @@
 </head>
 <body>
 
-<div style="margin-top: 7px" id="header" class="top-up">
-    <div class="container">
-        <div class="row-top">
-            <div class="col-xm-12">
-                <ul class="top-1 nopad">
-                    <li style="font-weight: bold" class="top"><a>Contact Us:</a></li>
-                    <li class="top"><a style="color: lightseagreen">01730067504 </a>or</li>
-                    <li class="top"><a style="color: lightseagreen">01730067506</a></li>
-                    <li class="top">|<a href="mailto:info@businesslandbd.com" style="color: lightseagreen"> info@businesslandbd.com</a></li>
-                </ul>
+<header>
+    <div class="top-bar">
+        <div class="container">
+            <div class="hotline pull-left">
+                <a href="tel:09678002003"><i class="fa fa-phone"></i><span class="hotline-number"> 01730067504 or 01730067506</span></a>
             </div>
+            <div class="nav pull-right">
+{#                <a class="item pc-builder txt"#}
+{#                   href="tool/pc_builder"><span>PC Builder</span></a>#}
+                {#                <a class="item offer txt" href="/emi-terms"><span>EMI</span></a>#}
+                {#                <a class="item offer txt" href="/information/offer"><span>Offers</span></a>#}
+                <span class="user item"><a href="account/account"><i
+                        class="fa fa-user-o"></i></a><span class="hidden-xs"><a href="{% url 'register' %}">Register</a> or <a
+                        href="{% url 'login' %}">Login</a></span></span>
+            </div>
+            <div class="clear"></div>
         </div>
     </div>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a style="font-weight: bold" class="navbar-brand" href="{% url 'store' %}"><img style="height: 40px; width: 40px"
-                                                                                    src="{% static 'images/businessland_logo.png' %}"
-                                                                                    alt=""> Businessland</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'store' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#services">Services <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#product">Products <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#gallery">Gallery <span class="sr-only">(current)</span></a>
-            </li>
-
-        </ul>
-
-        <div class="form-inline my-2 my-lg-0">
-            {% if request.user.is_authenticated is False %}
-                <a href="{% url 'login' %}" class="btn btn-warning">Login / Signup</a>
-            {% endif %}
-            <a href="{% url 'cart' %}">
+    <div class="main-header">
+        <div class="container">
+            <div class="row menu">
+                <div class="col-xs-6 col-sm-2 col-md-2 no-pad-xs">
+                    <div id="nav-toggler"><span></span></div>
+                    <div class="logo">
+                        <a href="https://www.businesslandbd.com"><img style="height: 55px; width: 55px"
+                                                                      src="{% static 'images/businessland_logo.png' %}"></a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 search-wrap">
+                    <div id="search" class="search">
+                        <div class="input-group">
+                            <input type="text" name="search" value="" placeholder="Search" autocomplete="off">
+                            <ul class="dropdown-menu"></ul>
+                            <button style="height: 45px;width: 50px;" type="button" class="btn btn-info"><i class="fa fa-search"></i></button>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 no-pad-xs">
+                    <div class="icons">
+                        <span class="search-toggle"><i class="fa fa-search"></i></span>
+                        {#                        <span class="compare" id="compare" title="Compare (0)"><a href="product/compare"><i class="fa fa-sliders"></i></a><span class="value">0</span></span>#}
+                        <span class="cart" id="cart">
+                                        <a href="{% url 'cart' %}">
                 <img id="cart-icon" src="{% static 'images/cart.png' %}">
             </a>
             <p id="cart-total">{{ cartItems }}</p>
-            {% if request.user.is_authenticated is True %}
-                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
-                   data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false"> <i class="fas fa-user"></i>
-                    {% if user.first_name or user.last_name %}
-                        {{ user.first_name|upper }} {{ user.last_name|upper }}
-                    {% else %}
-                        {{ user.username }}
-                    {% endif %}
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Change Password</a>
-                    <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+{#                            <span class="cart-toggler" title="0 item(s)"><i class="fa fa-shopping-cart"></i><span class="value">0</span></span>#}
+{#                             <ul class="mini-cart">#}
+{#                                 <li class="loading"><i class="fa fa-spinner" aria-hidden="true"></i><p class="text-center">Loading...</p></li>#}
+{#                             </ul>#}
+                        </span>
+                    </div>
+                    {#                    <a class="pc-builder-btn" href="tool/pc_builder"><i class="fa fa-desktop desktop-icon"></i><span class="desktop-icom">Build Your Own Pc</span></a>#}
+                    <div class="clear"></div>
                 </div>
-            {% endif %}
+            </div>
         </div>
-
     </div>
-</nav>
+    <div class="main-nav">
+        <div class="container">
+            <nav class="nav" id="main-nav">
+                <ul class="responsive-menu">
+                    <li class="has-child c-1">
+                        <a href="desktops">Desktop PC</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="desktops/apple-mini-pc">Apple Mac Mini</a></li>
+                            <li><a href="desktops/apple-imac-desktop-pc">Apple iMac</a></li>
+                            <li class="has-child">
+                                <a href="desktops/all-in-one-pc">All in one PC</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="desktops/all-in-one-pc/dell-all-in-one">DELL</a>
+                                    </li>
+                                    <li>
+                                        <a href="desktops/all-in-one-pc/i-life-all-in-one-pc">i-Life</a>
+                                    </li>
+                                    <li>
+                                        <a href="desktops/all-in-one-pc/hp-all-in-one">HP</a>
+                                    </li>
+                                    <li><a href="desktops/all-in-one-pc/asus-all-in-one">ASUS</a>
+                                    </li>
+                                    <li><a href="desktops/all-in-one-pc/lenovo-all-in-one">LENOVO</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="desktops/star-pc">Star PC</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="desktops/star-pc/ryzen-pc">RYZEN PC</a>
+                                    </li>
+                                    <li><a href="desktops/star-pc/intel-pc">Intel PC</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="desktops/portable-mini-pc">Portable Mini PC</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="desktops/portable-mini-pc/mini-pc-asus">
+                                        Asus</a></li>
+                                    <li><a href="desktops/portable-mini-pc/intel-mini-pc">Intel</a>
+                                    </li>
+                                    <li>
+                                        <a href="desktops/portable-mini-pc/gigabyte-mini-pc">GIGABYTE</a>
+                                    </li>
+                                    <li><a href="desktops/portable-mini-pc/hp-portable-pc">
+                                        HP</a></li>
+                                    <li><a href="chuwi-mini-pc">Chuwi</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="desktops/brand-pc">Brand PC</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="desktops/brand-pc/lenovo-desktop">Lenovo</a>
+                                    </li>
+                                    <li><a href="desktops/brand-pc/hp-desktop">HP</a></li>
+                                    <li><a href="desktops/brand-pc/dell-desktop">Dell</a>
+                                    </li>
+                                    <li><a href="desktops/brand-pc/asus-desktop">Asus</a>
+                                    </li>
+                                    <li><a href="desktops/brand-pc/acer-desktop">Acer</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="desktops/economy-pc">Budget PC</a></li>
+                            <li class="has-child">
+                                <a href="desktops/gaming-pc">Gaming PC</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="desktops/gaming-pc/amd-gaming-pc">RYZEN
+                                        PC</a></li>
+                                    <li><a href="desktops/gaming-pc/intel-gaming-pc">Intel
+                                        PC</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="desktops" class="see-all">Show All Desktop PC</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="laptop-notebook">Laptop &amp; Netbook</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="laptop-notebook/laptop">All Laptop</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="laptop-notebook/laptop/razer-laptop">Razer</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/laptop/asus-laptop">
+                                        Asus</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop/acer-laptop">Acer</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/laptop/dell-laptop">
+                                        Dell</a></li>
+                                    <li><a href="laptop-notebook/laptop/hp-laptop"> HP</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/laptop/lenovo-laptop">Lenovo</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/laptop/apple-macbook">MacBook</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop/microsoft-surface-pro">Surface</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/laptop/chuwi">Chuwi</a>
+                                    </li>
+                                    <li><a href="huawei-laptop">Huawei</a></li>
+                                    <li><a href="xiaomi-mi-laptop">Mi </a></li>
+                                    <li><a href="laptop-notebook/laptop/msi-laptop">MSI</a>
+                                    </li>
+                                    <li><a href="walton-laptop">Walton</a></li>
+                                    <li><a href="avita-laptop">AVITA</a></li>
+                                    <li><a href="nexstgo-laptop">Nexstgo</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop/i-life-laptop">iLife</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="laptop-notebook/Gaming-Laptop">Gaming Laptop</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="laptop-notebook/Gaming-Laptop/razer">RAZER</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/Gaming-Laptop/hp">HP</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/Gaming-Laptop/asus">Asus</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/Gaming-Laptop/msi">MSI</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/Gaming-Laptop/gigabyte">GIGABYTE</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/Gaming-Laptop/acer">Acer</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/Gaming-Laptop/dell">Dell</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/Gaming-Laptop/lenovo">Lenovo</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/Gaming-Laptop/xiaomi">XIAOMI</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="laptop-notebook/ultrabook">Premium Ultrabook</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="laptop-notebook/ultrabook/asus">Asus</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/ultrabook/acer">Acer</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/ultrabook/microsoft">Microsoft</a>
+                                    </li>
+                                    <li><a href="laptop-notebook/ultrabook/hp">HP</a></li>
+                                    <li><a href="laptop-notebook/ultrabook/dell">Dell</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/ultrabook/lenovo">Lenovo</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="external-graphics-enclosure">External Graphics
+                                Enclosure</a></li>
+                            <li class="has-child">
+                                <a href="laptop-notebook/laptop-accessories">Laptop
+                                    Accessories</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-battery">Laptop
+                                            Battery</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-cooler">Laptop
+                                            Cooler</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-desk">Laptop
+                                            Desk</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-locker">Laptop
+                                            Locker</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-adapter">Adapter</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-bag">Laptop
+                                            Bag</a></li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-hdd-caddy">CADDY</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-keyboard">Keyboard</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-display">Display</a>
+                                    </li>
+                                    <li>
+                                        <a href="laptop-notebook/laptop-accessories/laptop-dvd-writer">DVD
+                                            Writer</a></li>
+                                    <li><a href="laptop-notebook/laptop-accessories/dock">Dock</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="laptop-notebook" class="see-all">Show All Laptop
+                                &amp; Netbook</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="component">Component</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="component/casing">Casing</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="component/casing/Antec-Casing">Antec</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/casing/gamdias-casing">Gamdias</a>
+                                    </li>
+                                    <li><a href="lian-li-casing">Lian Li</a></li>
+                                    <li><a href="kwg-casing">KWG</a></li>
+                                    <li>
+                                        <a href="component/casing/maxgreen-casing">MaxGreen</a>
+                                    </li>
+                                    <li><a href="xtreme-casing">Xtreme</a></li>
+                                    <li>
+                                        <a href="component/casing/gigabyte-casing">Gigabyte</a>
+                                    </li>
+                                    <li><a href="corsair-case">Corsair</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/casing-cooler">Casing Cooler</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/casing-cooler/antec-casing-cooler">Antec</a>
+                                    </li>
+                                    <li><a href="lian-li-casing-fan">Lian Li</a></li>
+                                    <li><a href="noctua-casing-cooler">Noctua</a></li>
+                                    <li>
+                                        <a href="component/casing-cooler/bitfenix-casing-cooler">Bitfenix</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/casing-cooler/gamdias-casing-fan">Gamdias</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/casing-cooler/corsair-casing-cooler">Corsair</a>
+                                    </li>
+                                    <li><a href="kwg-casing-cooler">KWG</a></li>
+                                    <li>
+                                        <a href="component/casing-cooler/cougar-casing-cooler">Cougar</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/power-supply">Power Supply</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/power-supply/Antec-Power">Antec</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/power-supply/gamdias-power-supply">Gamdias</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/power-supply/maxgreen-power-supply">MaxGreen</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/power-supply/Cooler-Master-power">Cooler
+                                            Master</a></li>
+                                    <li><a href="thermaltake-power-supply">Thermaltake</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/power-supply/corsair-psu">Corsair</a>
+                                    </li>
+                                    <li><a href="gigabyte-power-supply">Gigabyte</a></li>
+                                    <li>
+                                        <a href="component/power-supply/value-top-power-supply">Value-Top</a>
+                                    </li>
+                                    <li><a href="lian-li-strimer">Lian Li</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="water-block">Water Block</a></li>
+                            <li class="has-child">
+                                <a href="component/processor">Processor</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="component/processor/amd-processor">AMD</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/processor/intel-processor">Intel</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/CPU-Cooler">CPU Cooler</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/CPU-Cooler/Antec-Cooler">Antec</a>
+                                    </li>
+                                    <li><a href="component/CPU-Cooler/gamdias-cpu-cooler">Gamdias</a>
+                                    </li>
+                                    <li><a href="component/CPU-Cooler/cryorig-cpu-cooler">CRYORIG</a>
+                                    </li>
+                                    <li><a href="component/CPU-Cooler/corsair-cpu-cooler">Corsair</a>
+                                    </li>
+                                    <li><a href="lian-li-cpu-cooler">Lian Li</a></li>
+                                    <li><a href="cougar-cpu-cooler">Cougar</a></li>
+                                    <li><a href="cooler-master-cpu-cooler">Cooler Master</a>
+                                    </li>
+                                    <li><a href="thermaltake-cpu-cooler">Thermaltake</a>
+                                    </li>
+                                    <li><a href="nzxt-cpu-cooler">NZXT</a></li>
+                                    <li><a href="noctua-cpu-cooler">Noctua</a></li>
+                                    <li><a href="gigabyte-cpu-cooler">Gigabyte</a></li>
+                                    <li><a href="ekwb-cpu-cooler">EKWB</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/motherboard">Motherboard</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/motherboard/asrock-intel-motherboard">ASRock
+                                            (Intel)</a></li>
+                                    <li><a href="component/motherboard/asrock-motherboard">ASRock
+                                        (RYZEN)</a></li>
+                                    <li><a href="component/motherboard/asus-motherboard">ASUS
+                                        (Intel)</a></li>
+                                    <li>
+                                        <a href="component/motherboard/asus-amd-motherboard">ASUS
+                                            (AMD)</a></li>
+                                    <li>
+                                        <a href="component/motherboard/gigabyte-motherboard">GIGABYTE
+                                            (Intel)</a></li>
+                                    <li>
+                                        <a href="component/motherboard/gigabyte-amd-motherboard">GIGABYTE
+                                            (AMD)</a></li>
+                                    <li><a href="component/motherboard/msi-motherboard">MSI
+                                        (Intel)</a></li>
+                                    <li>
+                                        <a href="component/motherboard/msi-ryzen-motherboard">MSI
+                                            (Ryzen)</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/graphics-card">Graphics Card</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="component/graphics-card/xfx-graphics-card">XFX</a>
+                                    </li>
+                                    <li><a href="component/graphics-card/ZOTAC-Graphics">ZOTAC</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/graphics-card/gigabyte-graphics-card">GIGABYTE</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/graphics-card/asus-graphics-card">ASUS</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/graphics-card/sapphire-graphics-card">Sapphire</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/graphics-card/galax-graphics-card">Galax</a>
+                                    </li>
+                                    <li><a href="component/graphics-card/msi-graphics-card">MSI</a>
+                                    </li>
+                                    <li><a href="pny-graphics-card">PNY</a></li>
+                                    <li><a href="colorful-graphics-card">Colorful</a></li>
+                                    <li><a href="vga-holder">VGA Holder</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/portable-hard-disk-drive">Portable Hard
+                                    Disk Drive</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="g-technology">G-Technology</a></li>
+                                    <li>
+                                        <a href="component/portable-hard-disk-drive/toshiba-portable-hard-disk">Toshiba</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/portable-hard-disk-drive/ADATA-Hard-disk">ADATA</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/portable-hard-disk-drive/samsung-hard-disk-drive">Samsung</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/portable-hard-disk-drive/tanscend-hdd">Transcend</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/portable-hard-disk-drive/western-digital-portable-hard-disk">Western
+                                            Digital</a></li>
+                                    <li>
+                                        <a href="component/portable-hard-disk-drive/seagate-portable-hdd">Seagate</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/hard-disk-drive">Hard Disk Drive</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/hard-disk-drive/western-digital-hdd">Western
+                                            Digital</a></li>
+                                    <li>
+                                        <a href="component/hard-disk-drive/hgst-hdd">HGST</a>
+                                    </li>
+                                    <li><a href="component/hard-disk-drive/toshiba-hdd">Toshiba</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/hard-disk-drive/seagate-hard-disk">Seagate</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/hard-disk-drive/apple-hdd">Apple</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="component/SSD-Hard-Disk">SSD</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li>
+                                            <a href="component/SSD-Hard-Disk/team-ssd">Team</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/galax-ssd">Galax</a>
+                                        </li>
+                                        <li>
+                                            <a href="component/SSD-Hard-Disk/western-digital-ssd">Western
+                                                Digital</a></li>
+                                        <li><a href="component/SSD-Hard-Disk/adata-hdd">Adata</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/Transcend-ssd">Transcend</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/samsung-hdd">Samsung</a>
+                                        </li>
+                                        <li>
+                                            <a href="component/SSD-Hard-Disk/pny-ssd">PNY</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/hp-ssd">HP</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/corsair-ssd">Corsair</a>
+                                        </li>
+                                        <li><a href="silicon-power-ssd">Silicon Power</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="component/SSD-Hard-Disk/gigabyte-ssd">Gigabyte</a>
+                                        </li>
+                                        <li><a href="patriot-ssd">Patriot</a></li>
+                                        <li><a href="walton-ssd">Walton</a></li>
+                                        <li><a href="component/SSD-Hard-Disk/intel-ssd">Intel</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/teutons-ssd">Teutons</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/twinmos-ssd">Twinmos</a>
+                                        </li>
+                                        <li><a href="lexar-ssd">Lexar</a></li>
+                                        <li><a href="component/SSD-Hard-Disk/colorful-ssd">Colorful</a>
+                                        </li>
+                                        <li><a href="component/SSD-Hard-Disk/apacer-ssd">Apacer</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/ram">RAM (Desktop)</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="component/ram/team-ram">Team</a></li>
+                                    <li><a href="component/ram/transcend-ram">Transcend</a>
+                                    </li>
+                                    <li><a href="component/ram/geil-ram">GEIL</a></li>
+                                    <li><a href="component/ram/twinmos-ram">TwinMOS</a></li>
+                                    <li><a href="component/ram/hp-ram">HP</a></li>
+                                    <li><a href="component/ram/adata">Adata</a></li>
+                                    <li><a href="component/ram/kingston-ram">Kingston</a>
+                                    </li>
+                                    <li><a href="component/ram/corsair-ram">Corsair</a></li>
+                                    <li><a href="avexir-ram">AVEXIR</a></li>
+                                    <li><a href="pny-desktop-ram">PNY</a></li>
+                                    <li><a href="thermaltake-desktop-ram">Thermaltake</a>
+                                    </li>
+                                    <li><a href="component/ram/g-skill-ram">G.Skill</a></li>
+                                    <li><a href="apacer-desktop-ram">Apacer</a></li>
+                                    <li><a href="component/ram/gigabyte-ram">Gigabyte</a>
+                                    </li>
+                                    <li><a href="crucial-ram">Crucial</a></li>
+                                    <li><a href="component/ram/patriot-ram">Patriot</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/laptop-ram">RAM (Laptop)</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/laptop-ram/team-laptop-ram">Team</a>
+                                    </li>
+                                    <li><a href="transcend-laptop-ram">Transcend</a></li>
+                                    <li><a href="samsung-laptop-ram">Samsung</a></li>
+                                    <li><a href="component/laptop-ram/hp-laptop-ram">HP</a>
+                                    </li>
+                                    <li><a href="crucial-laptop-ram">Crucial</a></li>
+                                    <li><a href="component/laptop-ram/kingston-laptop-ram">Kingston</a>
+                                    </li>
+                                    <li><a href="trm-laptop-ram">TRM</a></li>
+                                    <li><a href="component/laptop-ram/patriot-laptop-ram">Patriot</a>
+                                    </li>
+                                    <li><a href="silicon-power-laptop-ram">Silicon Power</a>
+                                    </li>
+                                    <li><a href="apacer-laptop-ram">Apacer</a></li>
+                                    <li><a href="component/laptop-ram/adata-laptop-ram">Adata</a>
+                                    </li>
+                                    <li><a href="component/laptop-ram/corsair-laptop-ram">Corsair</a>
+                                    </li>
+                                    <li><a href="teutons-laptop-ram">Teutons</a></li>
+                                    <li><a href="lexar-laptop-ram">Lexar</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/portable-ssd-hard-disk">Portable SSD</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/portable-ssd-hard-disk/samsung-portable-ssd-hard-disk">Samsung</a>
+                                    </li>
+                                    <li>
+                                        <a href="component/portable-ssd-hard-disk/hp-portable-ssd">HP</a>
+                                    </li>
+                                    <li><a href="teutons-portable-ssd">Teutons</a></li>
+                                    <li><a href="g-drive-portable-ssd">G-Technology</a></li>
+                                    <li>
+                                        <a href="component/portable-ssd-hard-disk/transcend-portable-ssd">Transcend </a>
+                                    </li>
+                                    <li>
+                                        <a href="component/portable-ssd-hard-disk/western-ssd">Western
+                                            Digital</a></li>
+                                    <li>
+                                        <a href="component/portable-ssd-hard-disk/adata-portable-ssd">Adata</a>
+                                    </li>
+                                    <li><a href="pny-portable-ssd">PNY</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="component/ram-cooler">RAM Cooler</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/ram-cooler/geil-ram-cooler">GeIL</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="component/sound-card">Sound Card</a></li>
+                            <li class="has-child">
+                                <a href="component/optical-hdd">Optical Disk Drive</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="component/optical-hdd/internal-optical-hdd">Internal
+                                            Optical Disk Drive</a></li>
+                                    <li>
+                                        <a href="component/optical-hdd/external-optical-hdd">External
+                                            Optical Disk Drive</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="component/Stabilizer">Stabilizer</a></li>
+                            <li><a href="vertical-graphics-card-holder">Vertical Graphics
+                                Card Holder</a></li>
+                            <li><a href="component" class="see-all">Show All Component</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="monitor">Monitor</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="monitor-arm">Monitor Arm</a></li>
+                            <li><a href="monitor/acer">Acer</a></li>
+                            <li><a href="monitor/asus">Asus</a></li>
+                            <li><a href="monitor/benq">Benq</a></li>
+                            <li><a href="monitor/dell">Dell</a></li>
+                            <li><a href="monitor/esonic">Esonic</a></li>
+                            <li><a href="monitor/gigabyte">GIGABYTE</a></li>
+                            <li><a href="monitor/hp">HP</a></li>
+                            <li><a href="monitor/walton">Walton</a></li>
+                            <li><a href="monitor/lg">LG </a></li>
+                            <li><a href="monitor/infocus">InFocus</a></li>
+                            <li><a href="monitor/msi">MSI</a></li>
+                            <li><a href="monitor/xiaomi">XIAOMI</a></li>
+                            <li><a href="monitor/philips">PHILIPS</a></li>
+                            <li><a href="monitor/samsung">Samsung</a></li>
+                            <li><a href="monitor/aoc">AOC</a></li>
+                            <li><a href="monitor/viewsonic">Viewsonic</a></li>
+                            <li><a href="monitor/non-brand-products">OTHERS</a></li>
+                            <li><a href="monitor" class="see-all">Show All Monitor</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="ups-ips">UPS</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="ups-ips/online-ups">Online UPS</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="ups-ips/online-ups/apollo">APOLLO</a></li>
+                                    <li><a href="ups-ips/online-ups/tecnoware">Tecnoware</a>
+                                    </li>
+                                    <li><a href="ups-ips/online-ups/maxgreen">MaxGreen</a>
+                                    </li>
+                                    <li><a href="ups-ips/online-ups/zigor">ZIGOR</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="ups-ips/offline-ups">Offline UPS</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="ups-ips/offline-ups/maxGreen-offline-ups">MaxGreen</a>
+                                    </li>
+                                    <li><a href="tecnoware-offline-ups">Tecnoware</a></li>
+                                    <li><a href="ups-ips/offline-ups/zigor-offline-ups">Zigor</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="ups-ips" class="see-all">Show All UPS</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="tablet-pc">Tablet PC</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="tablet-pc/wacom-tablet-pc">Wacom</a></li>
+                            <li><a href="tablet-pc/apple-tablet">Apple</a></li>
+                            <li><a href="tablet-pc/lenovo-tablet-pc">Lenovo</a></li>
+                            <li><a href="tablet-pc/huawei-tablet-pc">HUAWEI</a></li>
+                            <li><a href="tablet-pc/microsoft-tablet-pc">Microsoft</a></li>
+                            <li><a href="tablet-pc/twinmos-tablet-pc">TwinMOS</a></li>
+                            <li><a href="tablet-pc/genius-tablet">Genius</a></li>
+                            <li><a href="chuwi-tablet-pc">Chuwi</a></li>
+                            <li><a href="xp-pen-tablet-pc">XP-PEN</a></li>
+                            <li><a href="veikk-tablet-pc">VEIKK</a></li>
+                            <li><a href="tablet-pc/stylus">Stylus</a></li>
+                            <li><a href="tablet-pc/amazon">Amazon</a></li>
+                            <li><a href="tablet-pc" class="see-all">Show All Tablet PC</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="office-equipment">Office Equipment</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="office-equipment/printer">Printer</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="office-equipment/printer/HP-printer">
+                                        HP</a></li>
+                                    <li><a href="office-equipment/printer/xerox">Xerox</a>
+                                    </li>
+                                    <li><a href="office-equipment/printer/EPSON-Printer">EPSON</a>
+                                    </li>
+                                    <li><a href="office-equipment/printer/pantum-printer">Pantum</a>
+                                    </li>
+                                    <li><a href="office-equipment/printer/Canon-printer">Canon</a>
+                                    </li>
+                                    <li><a href="office-equipment/printer/brother-printer">Brother</a>
+                                    </li>
+                                    <li><a href="office-equipment/printer/Label-Printer">Label
+                                        Printer</a></li>
+                                    <li><a href="office-equipment/printer/ID-Card-Printer">ID
+                                        Card Printer</a></li>
+                                    <li><a href="zebra-printer">Zebra</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="office-equipment/toner">Toner</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="office-equipment/toner/Brother-toner">Brother</a>
+                                    </li>
+                                    <li><a href="office-equipment/toner/samsung-toner">Samsung </a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/toner/canon-toner">Canon</a>
+                                    </li>
+                                    <li><a href="office-equipment/toner/HP-toner">HP
+                                        Toner</a></li>
+                                    <li><a href="safeway-toner">SafeWay Toner</a></li>
+                                    <li>
+                                        <a href="office-equipment/toner/pantum-toner">Pantum</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="office-equipment/cartridge">Cartridge</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="office-equipment/cartridge/hp-cartridge">
+                                        HP</a></li>
+                                    <li><a href="canon-cartridge">Canon</a></li>
+                                    <li>
+                                        <a href="office-equipment/cartridge/epson-cartridge">Epson</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="office-equipment/pos-printer">POS Printer</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="office-equipment/pos-printer/pos-printer-rongta">RONGTA</a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/pos-printer/pos-printer-sewoo">Sewoo</a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/pos-printer/pos-printer-epson">Epson</a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/pos-printer/pos-printer-honeywell">Honeywell</a>
+                                    </li>
+                                    <li><a href="office-equipment/pos-printer/sprt">SPRT</a>
+                                    </li>
+                                    <li><a href="xprinter-pos-printer">Xprinter</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="ink-bottle">Ink Bottle</a></li>
+                            <li class="has-child">
+                                <a href="office-equipment/Scanner">Scanner</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="office-equipment/Scanner/hp">HP</a></li>
+                                    <li><a href="office-equipment/Scanner/canon">Canon</a>
+                                    </li>
+                                    <li><a href="office-equipment/Scanner/epson">EPSON</a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/Scanner/plustek">Plustek</a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/Scanner/brother">Brother</a>
+                                    </li>
+                                    <li><a href="office-equipment/Scanner/mustek">Mustek</a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/Scanner/avision">Avision</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="office-equipment/fax">Fax</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="office-equipment/fax/panasonic-fax">Panasonic </a>
+                                    </li>
+                                    <li>
+                                        <a href="office-equipment/fax/brother-fax">Brother</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="office-equipment/pa-system">PA SYSTEM</a></li>
+                            <li><a href="office-equipment/conference-systems">Conference
+                                Systems</a></li>
+                            <li><a href="office-equipment/money-counting-machine">Money
+                                Counting Machine</a></li>
+                            <li><a href="office-equipment/paper-shredder">Paper Shredder</a>
+                            </li>
+                            <li class="has-child">
+                                <a href="office-equipment/ip-phone">IP Phone</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="grandstream-ip-phone">Grandstream</a></li>
+                                    <li><a href="yealink-ip-phone">Yealink</a></li>
+                                    <li><a href="fanvil-ip-phone">Fanvil</a></li>
+                                    <li><a href="ip-phone-accessories">IP Phone
+                                        Accessories</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="office-equipment/telephone-set">Telephone Set</a>
+                            </li>
+                            <li><a href="office-equipment/Barcode-Scanner">Barcode
+                                Scanner</a></li>
+                            <li class="has-child">
+                                <a href="interactive-board">Interactive Board</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="infocus-interactive-board">InFocus</a></li>
+                                    <li><a href="benq-interactive-board">BenQ</a></li>
+                                    <li><a href="hitachi-interactive-board">Hitachi</a></li>
+                                    <li><a href="riotouch-interactive-board">Riotouch</a>
+                                    </li>
+                                    <li><a href="intech-interactive-board">INTECH</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="office-equipment/ips">IPS</a></li>
+                            <li><a href="office-equipment/laminating-machine">Laminating</a>
+                            </li>
+                            <li><a href="office-equipment/CASH-DRAWER">Cash Drawer</a></li>
+                            <li class="has-child">
+                                <a href="office-equipment/signage">Signage</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="benq-signage">BenQ</a></li>
+                                    <li><a href="foretell-signage">Foretell</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="office-equipment" class="see-all">Show All Office
+                                Equipment</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="projector">Projector</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="projector/vivitek">VIVItek</a></li>
+                            <li><a href="projector/benq">Benq</a></li>
+                            <li><a href="projector/panasonic">Panasonic</a></li>
+                            <li><a href="projector/epson">EPSON</a></li>
+                            <li><a href="projector/toshiba">Toshiba</a></li>
+                            <li><a href="projector/viewsonic">Viewsonic</a></li>
+                            <li><a href="projector/infocus">InFocus</a></li>
+                            <li><a href="projector/asus">Asus</a></li>
+                            <li><a href="projector/cheerlux">Cheerlux</a></li>
+                            <li><a href="projector/optoma">Optoma</a></li>
+                            <li><a href="projector/casio">CASIO</a></li>
+                            <li><a href="projector/maxell">Maxell</a></li>
+                            <li><a href="projector/non-brand-products">OTHERS</a></li>
+                            <li><a href="projection-screen">Projection Screen</a></li>
+                            <li><a href="projector-mount">Projector Mount</a></li>
+                            <li><a href="projector" class="see-all">Show All Projector</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="photocopier">Photocopier</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="photocopier/hp-photocopier"> HP</a></li>
+                            <li><a href="photocopier/toshiba-photocopier">Toshiba</a></li>
+                            <li><a href="photocopier/canon-photocopier">Canon</a></li>
+                            <li><a href="photocopier/SHARP-Photocopier">SHARP</a></li>
+                            <li><a href="photocopier/RICOH-Photocopier">RICOH</a></li>
+                            <li><a href="photocopier" class="see-all">Show All
+                                Photocopier</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="camera">Camera</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="camera/action-camera">Action Camera</a></li>
+                            <li class="has-child">
+                                <a href="camera/camera-dslr">DSLR</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="camera/camera-dslr/canon-dslr">Canon</a>
+                                    </li>
+                                    <li><a href="camera/camera-dslr/nikon-dslr">Nikon</a>
+                                    </li>
+                                    <li><a href="panasonic-dslr-camera">Panasonic</a></li>
+                                    <li><a href="camera/camera-dslr/sony-dslr">Sony</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="camera/Handycam">Handycam</a></li>
+                            <li class="has-child">
+                                <a href="camera/camera-lenses">Camera Lenses</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="camera/camera-lenses/sony-lenses">Sony</a>
+                                    </li>
+                                    <li><a href="camera/camera-lenses/nikon-camera-lenses">Nikon</a>
+                                    </li>
+                                    <li><a href="camera/camera-lenses/canon-camera-lenses">Canon</a>
+                                    </li>
+                                    <li><a href="camera/camera-lenses/tamron-camera-lenses">Tamron</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="camera/digital-camera">Digital Camera</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="camera/digital-camera/samsung-digital-camera">Samsung</a>
+                                    </li>
+                                    <li><a href="camera/digital-camera/sony-digital-camera">Sony</a>
+                                    </li>
+                                    <li>
+                                        <a href="camera/digital-camera/panasonic-digital-camera">Panasonic</a>
+                                    </li>
+                                    <li>
+                                        <a href="camera/digital-camera/nikon-digital-camera">Nikon</a>
+                                    </li>
+                                    <li>
+                                        <a href="camera/digital-camera/fujifilm-digtal-camera">Fujifilm</a>
+                                    </li>
+                                    <li>
+                                        <a href="camera/digital-camera/canon-digital-camera">Canon</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="camera/gimbal">Gimbal</a></li>
+                            <li class="has-child">
+                                <a href="camera/video-camera">Video Camera</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="camera/video-camera/sony">Sony</a></li>
+                                    <li>
+                                        <a href="camera/video-camera/panasonic">Panasonic</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="camera/flash-light">Camera Flash</a></li>
+                            <li><a href="camera/camera-tripod">Camera Tripod</a></li>
+                            <li><a href="camera" class="see-all">Show All Camera</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="Security-Camera">Security Camera</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="Security-Camera/access-control">Access Control</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="Security-Camera/access-control/cp-plus-access-control">CP
+                                            Plus</a></li>
+                                    <li>
+                                        <a href="Security-Camera/access-control/zkteco-access">ZKTeco</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/access-control/onspot-access-control">Onspot</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="Security-Camera/cc-camera">CC Camera</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="Security-Camera/cc-camera/jovision-cc-camera">Jovision</a>
+                                    </li>
+                                    <li><a href="Security-Camera/cc-camera/dahua-cc-camera">Dahua</a>
+                                    </li>
+                                    <li><a href="Security-Camera/cc-camera/YHDO">YHDO</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/cc-camera/hikvision-cc-camera">Hikvision</a>
+                                    </li>
+                                    <li><a href="Security-Camera/cc-camera/Others-CCCamera">Others</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="Security-Camera/IP-Camera">IP Camera</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="Security-Camera/IP-Camera/Dahua-IPCamera">Dahua</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/IP-Camera/symphony-ip-camera">Symphony</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/IP-Camera/Jovision-IPCamera">Jovision</a>
+                                    </li>
+                                    <li><a href="Security-Camera/IP-Camera/Campro-IPCamera">Campro</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/IP-Camera/Hikvision-IPCamera">Hikvision</a>
+                                    </li>
+                                    <li><a href="tp-link-ip-camera">TP-Link</a></li>
+                                    <li><a href="Security-Camera/IP-Camera/champion">Champion</a>
+                                    </li>
+                                    <li><a href="xiaomi-ip-camera">Xiaomi</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="Security-Camera/door-lock">Door Lock</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="Security-Camera/door-lock/zkteco-door-lock">ZKTeco</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/door-lock/non-brand-door-lock">Others</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="Security-Camera/ptz-camera">PTZ Camera</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="Security-Camera/ptz-camera/dahua-ptz-camera">
+                                            Dahua</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="Security-Camera/dahua-cc-camera-package">Dahua CC
+                                Camera Package</a></li>
+                            <li><a href="Security-Camera/ip-camera-package">Dahua IP Camera
+                                Package</a></li>
+                            <li><a href="Security-Camera/hikvision-package">HIKVISION CC
+                                Camera Package</a></li>
+                            <li class="has-child">
+                                <a href="Security-Camera/dvr">DVR</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="Security-Camera/dvr/jovision">Jovision</a>
+                                    </li>
+                                    <li>
+                                        <a href="Security-Camera/dvr/hikvision">Hikvision</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="Security-Camera/nvr">NVR</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="Security-Camera/nvr/dahua">Dahua</a></li>
+                                    <li>
+                                        <a href="Security-Camera/nvr/hikvision">Hikvision</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="Security-Camera/xvr">XVR</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="Security-Camera/xvr/dahua">Dahua</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="Security-Camera/cc-camera-accessories">CC Camera
+                                Accessories</a></li>
+                            <li><a href="Security-Camera/home-security-door-bell">Home
+                                Security Door Bell</a></li>
+                            <li><a href="Security-Camera" class="see-all">Show All Security
+                                Camera</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-2">
+                        <a href="networking">Networking</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="networking/networking-accessories">Networking
+                                    Accessories</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="networking/networking-accessories/cable-connector">Cable
+                                            Connector</a></li>
+                                    <li>
+                                        <a href="networking/networking-accessories/punch-down-tool">Punch
+                                            Down Tool</a></li>
+                                    <li>
+                                        <a href="networking/networking-accessories/crimping-tool">Crimping
+                                            Tool</a></li>
+                                    <li>
+                                        <a href="networking/networking-accessories/patch-cord">Patch
+                                            Cord</a></li>
+                                    <li>
+                                        <a href="networking/networking-accessories/cable-tester">Cable
+                                            Tester</a></li>
+                                    <li>
+                                        <a href="networking/networking-accessories/networking-cables">Cables</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/networking-accessories/mi-receiver">MI
+                                            Receiver</a></li>
+                                    <li>
+                                        <a href="networking/networking-accessories/surge-protector">Surge
+                                            Protector</a></li>
+                                    <li><a href="onu">ONU</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="networking/router">Router</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="zyxel-router">Zyxel</a></li>
+                                    <li><a href="networking/router/asus-router-bd"> ASUS</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/router/tp-link-router">TP-Link</a>
+                                    </li>
+                                    <li><a href="networking/router/wavlink">Wavlink</a></li>
+                                    <li><a href="networking/router/d-link-router">D-Link</a>
+                                    </li>
+                                    <li><a href="networking/router/tenda-router">Tenda</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/router/netgear-router">NETGEAR</a>
+                                    </li>
+                                    <li><a href="networking/router/mi-router">Mi</a></li>
+                                    <li>
+                                        <a href="networking/router/totolink-router">TOTOLINK</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/router/mercusys-router">Mercusys</a>
+                                    </li>
+                                    <li><a href="huawei-router">Huawei</a></li>
+                                    <li>
+                                        <a href="networking/router/mikrotik-router">Mikrotik</a>
+                                    </li>
+                                    <li><a href="networking/router/netis-router">Netis</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/router/linksys-router">LINKSYS</a>
+                                    </li>
+                                    <li><a href="networking/router/cisco-router">Cisco</a>
+                                    </li>
+                                    <li><a href="networking/router/belkin-router">Belkin</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/router/prolink-router">PROLINK</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/router/perfect-router">Perfect</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="networking/access-point">Access Point/Network
+                                    Extender</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="networking/access-point/totolink-access-point">TOTOLINK</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/access-point/tp-link-access-point">TP-Link</a>
+                                    </li>
+                                    <li><a href="wavlink-network-externder">Wavlink</a></li>
+                                    <li>
+                                        <a href="networking/access-point/linksys-access-point">LINKSYS</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/access-point/tenda-access-point">Tenda</a>
+                                    </li>
+                                    <li><a href="networking/access-point/netis-extender">Netis</a>
+                                    </li>
+                                    <li><a href="networking/access-point/mi-extender">Mi</a>
+                                    </li>
+                                    <li><a href="mercusys-range-extender">Mercusys</a></li>
+                                    <li>
+                                        <a href="networking/access-point/netgear-access-point">NETGEAR</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/access-point/cisco-access-point">Cisco</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/access-point/mikrotik-access-point">MikroTik</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/access-point/d-link-access-point">D-Link</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="networking/network-switch">Network Switch</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="networking/network-switch/d-link-switch">D-Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/network-switch/totolink-switches">TOTOLINK</a>
+                                    </li>
+                                    <li><a href="zyxel-network-switch">Zyxel</a></li>
+                                    <li><a href="networking/network-switch/netgear-switch">NETGEAR</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/tenda-switch">Tenda</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/dell-switcch">Dell</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/network-switch/linksys-network-switch">LINKSYS</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/micronet-switch">Micronet</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/mikrotik-switch">MikroTik</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/tp-link-switch">TP-Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/network-switch/hikvision-network-switch">HikVision</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/cisco-switch">Cisco</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/perfect-switch">Perfect</a>
+                                    </li>
+                                    <li><a href="networking/network-switch/netis-switch">Netis</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="networking/lan-card">LAN Card</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="networking/lan-card/tp-link-lan-card">TP-Link</a>
+                                    </li>
+                                    <li><a href="wavlink-lan-card">Wavlink</a></li>
+                                    <li>
+                                        <a href="networking/lan-card/d-link-lan-card">D-Link</a>
+                                    </li>
+                                    <li><a href="networking/lan-card/totolink-lan-card">TOTOLINK</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/lan-card/tenda-lan-card">Tenda</a>
+                                    </li>
+                                    <li><a href="mercusys-lan-card">Mercusys</a></li>
+                                    <li><a href="orico-lan-card">Orico</a></li>
+                                    <li>
+                                        <a href="networking/lan-card/ugreen-lan-card">Ugreen</a>
+                                    </li>
+                                    <li><a href="networking/lan-card/perfect-lan-card">Perfect</a>
+                                    </li>
+                                    <li>
+                                        <a href="networking/lan-card/havit-lan-card">Havit</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="networking/kvm-switch">KVM SWITCH</a></li>
+                            <li><a href="network-transceivers">Network Transceivers</a></li>
+                            <li><a href="networking/Modem">Modem</a></li>
+                            <li><a href="networking" class="see-all">Show All Networking</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="accessories">Accessories</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child multi-col">
+                                <a href="accessories/keyboards">Keyboard</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li><a href="accessories/keyboards/razer-keyboard">RAZER</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/gamdias-keyboard">GAMDIAS</a>
+                                        </li>
+                                        <li><a href="kwg-keyboard">KWG</a></li>
+                                        <li>
+                                            <a href="accessories/keyboards/maxgreen-keyboard">MaxGreen</a>
+                                        </li>
+                                        <li><a href="fantech-keyboard">Fantech</a></li>
+                                        <li><a href="accessories/keyboards/apple-keyboard">Apple</a>
+                                        </li>
+                                        <li><a href="steelseries-keyboard">SteelSeries</a>
+                                        </li>
+                                        <li><a href="golden-field-keyboard">Golden Field</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/logitech-keyboard">Logitech</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/a4-tech-keyboard">A4
+                                                TECH</a></li>
+                                        <li><a href="corsair-keyboard">Corsair</a></li>
+                                        <li>
+                                            <a href="accessories/keyboards/hp-keyboard">HP</a>
+                                        </li>
+                                        <li><a href="walton-keyboard">Walton</a></li>
+                                        <li>
+                                            <a href="accessories/keyboards/gigabyte-keyboard">GIGABYTE</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/keyboards/cooler-master-keyboard">Cooler
+                                                Master</a></li>
+                                        <li><a href="accessories/keyboards/dell-keyboard">Dell</a>
+                                        </li>
+                                        <li><a href="accessories/keyboards/rapoo-keyboard">Rapoo</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/microsoft-surface-pro-keyboard">Microsoft</a>
+                                        </li>
+                                        <li><a href="accessories/keyboards/xiaomi-keyboard">Xiaomi</a>
+                                        </li>
+                                        <li><a href="asus-keyboard">Asus</a></li>
+                                        <li><a href="accessories/keyboards/havit-keyboard">Havit</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/motospeed-keyboard">MotoSpeed</a>
+                                        </li>
+                                        <li><a href="accessories/keyboards/cougar-keyboard">Cougar</a>
+                                        </li>
+                                        <li><a href="delux-keyboard">Delux</a></li>
+                                        <li><a href="accessories/keyboards/prolin-keyboard">Prolink</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/micropack-keyboard">Micropack</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/keyboards/black-cat-keyboard">Black
+                                                Cat</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/mouse">Mouse</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li><a href="accessories/mouse/razer-mouse">
+                                            RAZER</a></li>
+                                        <li>
+                                            <a href="accessories/mouse/gamdias-gaming-mouse">GAMDIAS</a>
+                                        </li>
+                                        <li><a href="kwg-mouse">KWG</a></li>
+                                        <li><a href="accessories/mouse/max-green-mouse">MaxGreen</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/asus-mouse">Asus</a>
+                                        </li>
+                                        <li><a href="gigabyte-mouse">Gigabyte</a></li>
+                                        <li>
+                                            <a href="accessories/mouse/apple-mouse">Apple</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/mouse/xiaomi-mouse">Xiaomi</a>
+                                        </li>
+                                        <li><a href="microsoft-surface-mouse">Microsoft</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/logitech-mouse">Logitech</a>
+                                        </li>
+                                        <li><a href="benq-mouse">Benq</a></li>
+                                        <li><a href="accessories/mouse/hp-mouse">HP</a></li>
+                                        <li><a href="fantech-mouse">Fantech</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/mouse/delux-mouse">Delux</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/dell-mouse">Dell</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/mouse/rapoo-mouse">Rapoo</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/a4-tech-mouse">A4
+                                            TECH</a></li>
+                                        <li>
+                                            <a href="accessories/mouse/havit-mouse">Havit</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/corsair-mouse">Corsair</a>
+                                        </li>
+                                        <li><a href="walton-mouse">Walton</a></li>
+                                        <li><a href="accessories/mouse/steelseries">SteelSeries</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/mouse/lenovo-mouse">Lenovo</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/prolink-mouse">Prolink</a>
+                                        </li>
+                                        <li><a href="accessories/mouse/motospeed-mouse">MotoSpeed</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/mouse/micropack">Micropack</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/mouse-pad">Mouse Pad</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="hunter-mouse-pad">Hunter</a></li>
+                                    <li><a href="accessories/mouse-pad/razer-mouse-pad">RAZER</a>
+                                    </li>
+                                    <li><a href="accessories/mouse-pad/hp-mouse-pad">HP</a>
+                                    </li>
+                                    <li><a href="accessories/mouse-pad/gamdias-mouse-pad">Gamdias</a>
+                                    </li>
+                                    <li><a href="accessories/mouse-pad/rapoo-mouse-pad">Rapoo</a>
+                                    </li>
+                                    <li><a href="accessories/mouse-pad/logitech-mouse-pad">Logitech</a>
+                                    </li>
+                                    <li><a href="fantech-mouse-pad">Fantech</a></li>
+                                    <li><a href="asus-mouse-pad">Asus</a></li>
+                                    <li>
+                                        <a href="accessories/mouse-pad/steelseries-mouse-pad">SteelSeries </a>
+                                    </li>
+                                    <li><a href="corsair-mouse-pad">Corsair</a></li>
+                                    <li><a href="accessories/mouse-pad/havit-mouse-pad">Havit</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/headphone">Headphone</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/headphone/gamdias-headphone">GAMDIAS</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/razer-headphone">RAZER</a>
+                                        </li>
+                                        <li><a href="baseus-headphone">Baseus</a></li>
+                                        <li>
+                                            <a href="accessories/headphone/logitech-headphone">Logitech</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/havit-headphone">Havit</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/headphone/corsair-headphone">Corsair</a>
+                                        </li>
+                                        <li><a href="fantech-headphone">Fantech</a></li>
+                                        <li>
+                                            <a href="accessories/headphone/a4-tech-headphone">A4
+                                                TECH</a></li>
+                                        <li><a href="accessories/headphone/rapoo-headset">Rapoo</a>
+                                        </li>
+                                        <li><a href="ovleng-headphone">Ovleng</a></li>
+                                        <li>
+                                            <a href="accessories/headphone/steelseries-headphone">SteelSeries</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/headphone/microlab-headphone">Microlab</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/headphone/prolink-heoneadph">Prolink</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/headphone/edifier-headphone">Edifier</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/headphone/audio-technica-headphone">Audio
+                                                Technica</a></li>
+                                        <li>
+                                            <a href="accessories/headphone/sennheiser-headphone">Sennheiser</a>
+                                        </li>
+                                        <li><a href="remax-headphone">Remax</a></li>
+                                        <li><a href="asus-headphone">Asus</a></li>
+                                        <li><a href="accessories/headphone/jbl-headphones">JBL</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/headphone/hp-headphone">HP</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/xiaomi-headset">Xiaomi</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/bose-headphone">Bose</a>
+                                        </li>
+                                        <li><a href="cooler-master-headphone">Cooler
+                                            Master</a></li>
+                                        <li>
+                                            <a href="accessories/headphone/genius-headphone">Genius</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/1more-headphone">1More</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/jabra-headphone">Jabra</a>
+                                        </li>
+                                        <li><a href="accessories/headphone/casio-headphone">Casio</a>
+                                        </li>
+                                        <li><a href="msi-headphone">MSI</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/speaker-and-home-theater">Speaker &amp;
+                                    Home Theater</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/Accessories-razer-speaker">
+                                                Razer</a></li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/golden-field-speaker">Golden
+                                                Field</a></li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/microlab-speaker">Microlab</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/micropack-speaker">Micropack</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/xtreme-speaker">Xtreme</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/sony-speaker-and-home-theater">Sony</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/genius-speaker">Genius</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/havit-speaker">Havit</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/creative">Creative</a>
+                                        </li>
+                                        <li><a href="fantech-speakers">Fantech</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/digital-x-speaker">Digital
+                                                X</a></li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/altec-lansing-speaker">Altec
+                                                Lansing</a></li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/edifier-speaker">Edifier</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/f-and-d-multimedia-speaker">F&amp;D</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/Logitech-speaker">Logitech</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/bose">Bose</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/avermedia">Avermedia</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/philips-speaker">Philips</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/speaker-and-home-theater/others-speaker">Others</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/bluetooth-speaker">Bluetooth
+                                    Speakers</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/logitech">Logitech</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/xtreme">Xtreme</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/f-and-d">F&amp;D</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/a4-tech">A4
+                                            Tech</a></li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/microlab">Microlab</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/dell">Dell</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/xiaomi">XIAOMI</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/huawei">HUAWEI</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/havit">Havit</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/bang-and-olufsen">Bang
+                                                &amp; Olufsen</a></li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/golden-field">Golden
+                                                Field</a></li>
+                                        <li><a href="accessories/bluetooth-speaker/teutons">Teutons</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/x-mini-speaker">X-mini</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/pure">Pure
+                                            Acoustics</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="accessories/bluetooth-speaker/awei">Awei</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/hp">HP</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/jbl">JBL</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/micropack.brand">Micropack</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/bose-speaker">Bose</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/edifier">Edifier</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/remax">Remax</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/kts">KTS</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/rapoo">Rapoo</a>
+                                        </li>
+                                        <li><a href="accessories/bluetooth-speaker/kopdum">KopDum</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/non-brand-products">OTHERS</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/bluetooth-speaker/harman-kardon">Harman
+                                                Kardon</a></li>
+                                        <li><a href="accessories/bluetooth-speaker/philips">PHILIPS</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/ear-phone">Ear Phone</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li><a href="qcy-ear-phone">QCY</a></li>
+                                        <li><a href="accessories/ear-phone/razer-ear-phone">RAZER</a>
+                                        </li>
+                                        <li><a href="accessories/ear-phone/xiaomi-earphone">Xiaomi</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/ear-phone/hp-earphone">HP</a>
+                                        </li>
+                                        <li><a href="accessories/ear-phone/a4tech-earphone">A4Tech</a>
+                                        </li>
+                                        <li><a href="realme-earphone">Realme</a></li>
+                                        <li><a href="accessories/ear-phone/rapoo-ear-phone">Rapoo</a>
+                                        </li>
+                                        <li><a href="accessories/ear-phone/apple-earphone">Apple</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/ear-phone/edifier-earphone ">Edifier</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/ear-phone/microlab-earphone">Microlab</a>
+                                        </li>
+                                        <li><a href="teutons-earphone">Teutons</a></li>
+                                        <li>
+                                            <a href="accessories/ear-phone/uiisii">UiiSii</a>
+                                        </li>
+                                        <li><a href="awei-earphone">Awei</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="accessories/ear-phone/remax-earphone">Remax</a>
+                                        </li>
+                                        <li><a href="oneplus-earphone">OnePlus</a></li>
+                                        <li><a href="accessories/ear-phone/havit-earphone">Havit</a>
+                                        </li>
+                                        <li><a href="fantech-earphone">Fantech</a></li>
+                                        <li>
+                                            <a href="accessories/ear-phone/micropack-earphone">Micropack</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/ear-phone/baseus-earphone-price">Baseus</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/ear-phone/samsung-earphone">Samsung</a>
+                                        </li>
+                                        <li><a href="plextone-earphone">Plextone</a></li>
+                                        <li>
+                                            <a href="accessories/ear-phone/jbl-earphone">JBL</a>
+                                        </li>
+                                        <li><a href="ipipoo-earphone">Ipipoo</a></li>
+                                        <li><a href="accessories/ear-phone/1more-earphone">1MORE</a>
+                                        </li>
+                                        <li><a href="accessories/ear-phone/jabra-earphone">Jabra</a>
+                                        </li>
+                                        <li><a href="accessories/ear-phone/huawei-earphone">Huawei</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/webcam">Webcam</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="accessories/webcam/a4-tech-webcam">A4
+                                        TECH</a></li>
+                                    <li><a href="accessories/webcam/logitech-webcam">Logitech</a>
+                                    </li>
+                                    <li><a href="value-top-webcam">Value-Top</a></li>
+                                    <li><a href="micropack-webcam">Micropack</a></li>
+                                    <li><a href="havit-webcam">Havit</a></li>
+                                    <li><a href="xiaomi-webcam">Xiaomi</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="capture-card">Capture Card</a></li>
+                            <li class="has-child">
+                                <a href="accessories/microphone">Microphone</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="accessories/microphone/zoom">Zoom</a></li>
+                                    <li>
+                                        <a href="accessories/microphone/razer-microphone-accessories">RAZER</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/microphone/sennheiser-microphone">Sennheiser</a>
+                                    </li>
+                                    <li><a href="accessories/microphone/rode-microphone">RODE</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/microphone/panasonic-microphone">Panasonic</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/microphone/boya-speaker">Boya</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/microphone/audio-technica-microphone">Audio
+                                            Technica</a></li>
+                                    <li>
+                                        <a href="accessories/microphone/avermedia-microphone">AVermedia </a>
+                                    </li>
+                                    <li><a href="havit-microphone">Havit</a></li>
+                                    <li>
+                                        <a href="accessories/microphone/tev-microphone">TEV</a>
+                                    </li>
+                                    <li><a href="logitech-microphone">Logitech</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/Pen-Drive">Pen Drive</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li><a href="accessories/Pen-Drive/team-pendrive">Team</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/Transcend-Pendrive">Transcend</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/teutons-pendrive">Teutons</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/TWINMOS-Pendrive">TWINMOS</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/pny-pendrive">PNY</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/hp-pendrive">HP</a>
+                                        </li>
+                                        <li><a href="accessories/Pen-Drive/ADATA-Pen-drive">ADATA</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="accessories/Pen-Drive/ugreen-pendrive">Ugreen</a>
+                                        </li>
+                                        <li><a href="accessories/Pen-Drive/protec-pendrive">Protec</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/sandisk-pendrive">SanDisk</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/Pen-Drive/kingston-pendrive">Kingston</a>
+                                        </li>
+                                        <li><a href="accessories/Pen-Drive/apacer-pendrive">Apacer</a>
+                                        </li>
+                                        <li><a href="lexar-pen-drive">Lexar</a></li>
+                                        <li><a href="accessories/Pen-Drive/card-pendrive">Others</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/micro-sd-card">Memory Card</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="accessories/micro-sd-card/sandisk-memory-card">SanDisk</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/micro-sd-card/pny-micro-sd-card">PNY</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/micro-sd-card/transcend-memory-card">Transcend</a>
+                                    </li>
+                                    <li><a href="accessories/micro-sd-card/apacer-memory">Apacer</a>
+                                    </li>
+                                    <li><a href="accessories/micro-sd-card/adata-micro-sd">Adata</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/power-bank">Power Bank</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/power-bank/rapoo-power-bank">Rapoo</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/adata-power-bank">Adata</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/xiaomi-power-bank">XIAOMI</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/micropack-power-bank">Micropack</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/tp-link-power-bank">TP-Link</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/energizer-power-bank">Energizer</a>
+                                        </li>
+                                        <li><a href="ipipoo-power-bank">Ipipoo</a></li>
+                                        <li><a href="accessories/power-bank/hp-power-bank">HP</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/power-bank/huawei-power-bank">Huawei</a>
+                                        </li>
+                                        <li><a href="basues-power-bank">Baseus</a></li>
+                                        <li>
+                                            <a href="accessories/power-bank/dell-power-bank">Dell</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/ugreen-power-adapter">Ugreen</a>
+                                        </li>
+                                        <li><a href="awei-power-bank">Awei</a></li>
+                                        <li>
+                                            <a href="accessories/power-bank/remax-power-bank">Remax</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/apacer-power-bank">Apacer</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/power-bank/havit-power-bank">Havit</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/presenter">Presenter</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="accessories/presenter/logitech-presenter">Logitech</a>
+                                    </li>
+                                    <li><a href="accessories/presenter/targus-presenter">Targus</a>
+                                    </li>
+                                    <li><a href="accessories/presenter/prolink-presenter">Prolink</a>
+                                    </li>
+                                    <li><a href="baseus-presenter">Baseus</a></li>
+                                    <li><a href="accessories/presenter/micropack-presenter">Micropack</a>
+                                    </li>
+                                    <li>
+                                        <a href="accessories/presenter/non-brand-presenters">Others</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/tv-card">TV Card</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="accessories/tv-card/external-tv-card">External
+                                        TV Card</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child multi-col">
+                                <a href="accessories/converter-and-cable">Converter &amp;
+                                    Cable</a>
+                                <div class="drop-down drop-menu-2">
+                                    <ul>
+                                        <li><a href="accessories/converter-and-cable/awei">Awei</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/ugreen">Ugreen</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/apple">Apple</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/cougar">Cougar</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/huawei">HUAWEI</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/orico">Orico</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/netis">Netis</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/tp-link">TP-Link</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/rapoo">Rapoo</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/wavlink-router">Wavlink</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/baseus-earphone">Baseus</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/wiwu">WIWU</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/belkin">Belkin</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/dell">Dell</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/micropack.brand">Micropack</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/xiaomi">XIAOMI</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/havit">Havit</a>
+                                        </li>
+                                        <li><a href="accessories/converter-and-cable/x-leo">X-LEO</a>
+                                        </li>
+                                        <li>
+                                            <a href="accessories/converter-and-cable/non-brand-products">OTHERS</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/enclosure">HDD-SSD Enclosure</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="orico-enclosure">Orico</a></li>
+                                    <li><a href="ugreen-enclosure">Ugreen</a></li>
+                                    <li><a href="kesu-enclosure">Kesu</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="accessories/power-strip">Power Strip</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="accessories/power-strip/huntkey ">Huntkey</a>
+                                    </li>
+                                    <li><a href="accessories/power-strip/power-pac">Power
+                                        Pac</a></li>
+                                    <li><a href="accessories/power-strip/belkin">Belkin</a>
+                                    </li>
+                                    <li><a href="accessories/power-strip/nano">Nano</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="thermal-paste">Thermal Paste</a></li>
+                            <li><a href="accessories/digital-voice-recorder">Digital Voice
+                                Recorder</a></li>
+                            <li class="has-child">
+                                <a href="audio-adaptor">Audio Adaptor</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="baseus-audio-adaptor">Baseus</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="stream-deck">Stream Deck</a></li>
+                            <li><a href="accessories/pc-lighting-led-strips">PC Lighting
+                                &amp; LED Strips</a></li>
+                            <li><a href="accessories" class="see-all">Show All
+                                Accessories</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="software">Software</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="software/microsoft-software">Microsoft</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="software/microsoft-software/microsoft-windows">Windows</a>
+                                    </li>
+                                    <li><a href="software/microsoft-software/ms-office">MS
+                                        Office</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="software/antivirus">Antivirus</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="software/antivirus/for-home-user">For Home
+                                        User</a></li>
+                                    <li><a href="software/antivirus/for-business-users">For
+                                        Business Users</a></li>
+                                    <li><a href="software/antivirus/data-encryption">Data
+                                        Encryption</a></li>
+                                    <li><a href="software/antivirus/backup-and-recovery">Backup
+                                        and Recovery</a></li>
+                                    <li><a href="software/antivirus/data-loss-prevention">Data
+                                        Loss Prevention</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="software/adobe">Adobe</a></li>
+                            <li><a href="software/pdf">Nuance</a></li>
+                            <li><a href="software/vmware">vmware</a></li>
+                            <li><a href="software/autodesk">AutoDesk</a></li>
+                            <li><a href="software/redhat">REDHAT</a></li>
+                            <li><a href="software" class="see-all">Show All Software</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="server-networking">Server &amp; Storage</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li class="has-child">
+                                <a href="server-networking/workstation">Workstation</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="server-networking/workstation/workstation-hp">
+                                            HP</a></li>
+                                    <li>
+                                        <a href="server-networking/workstation/dell-workstation">
+                                            Dell</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="server-networking/server">Server</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="scalable-server">Scalable</a></li>
+                                    <li>
+                                        <a href="server-networking/server/dell-server">Dell</a>
+                                    </li>
+                                    <li>
+                                        <a href="server-networking/server/nas-server">NAS</a>
+                                    </li>
+                                    <li><a href="server-networking/server/hp-server">HP</a>
+                                    </li>
+                                    <li><a href="server-networking/server/cisco-server">Cisco</a>
+                                    </li>
+                                    <li><a href="netgear-server">Netgear</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="server-networking/storage">Storage</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="server-networking/storage/dell">Dell</a>
+                                    </li>
+                                    <li><a href="netgear-storage">Netgear</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child">
+                                <a href="server-networking/server-accessories">Accessories</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li>
+                                        <a href="server-networking/server-accessories/server-power-supply">Power
+                                            Supply</a></li>
+                                    <li>
+                                        <a href="server-networking/server-accessories/server-hdd">HDD</a>
+                                    </li>
+                                    <li>
+                                        <a href="server-networking/server-accessories/hdd-bay">HDD
+                                            Bay</a></li>
+                                    <li>
+                                        <a href="server-networking/server-accessories/raid-controller">RAID
+                                            Controller</a></li>
+                                    <li>
+                                        <a href="server-networking/server-accessories/server-ram">Ram</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="sip-server">SIP Server</a></li>
+                            <li><a href="server-networking" class="see-all">Show All Server
+                                &amp; Storage</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-2">
+                        <a href="television-startech">Television</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="xiaomi-television">Xiaomi MI</a></li>
+                            <li><a href="starex-television">Starex</a></li>
+                            <li><a href="television-startech/sony-television">Sony</a></li>
+                            <li><a href="television-startech/samsung-television">Samsung</a>
+                            </li>
+                            <li><a href="television-startech/sky-view">Sky view</a></li>
+                            <li><a href="wall-mount">Wall Mount</a></li>
+                            <li><a href="television-startech" class="see-all">Show All
+                                Television</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="air-conditioner">Air Conditioner</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li>
+                                <a href="air-conditioner/general-air-conditioner">GENERAL</a>
+                            </li>
+                            <li><a href="air-conditioner/midea-ac">Midea</a></li>
+                            <li><a href="air-conditioner" class="see-all">Show All Air
+                                Conditioner</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="gadget">Gadget</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="gadget/tv-box">TV Box</a></li>
+                            <li><a href="calculator">Calculator</a></li>
+                            <li class="has-child">
+                                <a href="gadget/smart-watch">Smart Watch</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="gadget/smart-watch/apple">Apple</a></li>
+                                    <li><a href="gadget/smart-watch/xiaomi">XIAOMI</a></li>
+                                    <li><a href="gadget/smart-watch/huawei">HUAWEI</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="gadget/daily-lifestyle">Daily Lifestyle</a></li>
+                            <li><a href="blower-machine">Blower</a></li>
+                            <li><a href="gadget" class="see-all">Show All Gadget</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-child c-1">
+                        <a href="gaming">Gaming</a>
+                        <ul class="drop-down drop-menu-1">
+                            <li><a href="game-pad">Gamepad</a></li>
+                            <li><a href="gaming-mouse">Mouse</a></li>
+                            <li><a href="gaming-mouse-pad">Mouse Pad</a></li>
+                            <li><a href="gaming-headphone">Headphone</a></li>
+                            <li><a href="gaming-keyboard">Keyboard</a></li>
+                            <li class="has-child">
+                                <a href="gaming-console">Gaming Console</a>
+                                <ul class="drop-down drop-menu-2">
+                                    <li><a href="xbox">Xbox</a></li>
+                                    <li><a href="play-station">Play Station</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="ps4-n-x-box-one-games">Games</a></li>
+                            <li><a href="gaming-chair">Gaming Chair</a></li>
+                            <li><a href="gaming-desk">Gaming Desk</a></li>
+                            <li><a href="gaming" class="see-all">Show All Gaming</a></li>
+                        </ul>
+                    </li>
+                    <li class="blog"><a href="http://www.startech.com.bd/blog">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+{#<div style="margin-top: 7px" id="header" class="top-up">#}
+{#    <div class="container">#}
+{#        <div class="row-top">#}
+{#            <div class="col-xm-12">#}
+{#                <ul class="top-1 nopad">#}
+{#                    <li style="font-weight: bold" class="top"><a>Contact Us:</a></li>#}
+{#                    <li class="top"><a style="color: lightseagreen">01730067504 </a>or</li>#}
+{#                    <li class="top"><a style="color: lightseagreen">01730067506</a></li>#}
+{#                    <li class="top">|<a href="mailto:info@businesslandbd.com" style="color: lightseagreen"> info@businesslandbd.com</a></li>#}
+{#                </ul>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#<nav class="navbar navbar-expand-lg navbar-dark bg-dark">#}
+{#    <a style="font-weight: bold" class="navbar-brand" href="{% url 'store' %}"><img style="height: 40px; width: 40px"#}
+{#                                                                                    src="{% static 'images/businessland_logo.png' %}"#}
+{#                                                                                    alt=""> Businessland</a>#}
+{#    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"#}
+{#            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#    </button>#}
+{##}
+{#    <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#        <ul class="navbar-nav mr-auto">#}
+{#            <li class="nav-item active">#}
+{#                <a class="nav-link" href="{% url 'store' %}">Home <span class="sr-only">(current)</span></a>#}
+{#            </li>#}
+{#            <li class="nav-item active">#}
+{#                <a class="nav-link" href="#services">Services <span class="sr-only">(current)</span></a>#}
+{#            </li>#}
+{#            <li class="nav-item active">#}
+{#                <a class="nav-link" href="#product">Products <span class="sr-only">(current)</span></a>#}
+{#            </li>#}
+{#            <li class="nav-item active">#}
+{#                <a class="nav-link" href="#gallery">Gallery <span class="sr-only">(current)</span></a>#}
+{#            </li>#}
+{##}
+{#        </ul>#}
+{##}
+{#        <div class="form-inline my-2 my-lg-0">#}
+{#            {% if request.user.is_authenticated is False %}#}
+{#                <a href="{% url 'login' %}" class="btn btn-warning">Login / Signup</a>#}
+{#            {% endif %}#}
+{#            <a href="{% url 'cart' %}">#}
+{#                <img id="cart-icon" src="{% static 'images/cart.png' %}">#}
+{#            </a>#}
+{#            <p id="cart-total">{{ cartItems }}</p>#}
+{#            {% if request.user.is_authenticated is True %}#}
+{#                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"#}
+{#                   data-toggle="dropdown"#}
+{#                   aria-haspopup="true" aria-expanded="false"> <i class="fas fa-user"></i>#}
+{#                    {% if user.first_name or user.last_name %}#}
+{#                        {{ user.first_name|upper }} {{ user.last_name|upper }}#}
+{#                    {% else %}#}
+{#                        {{ user.username }}#}
+{#                    {% endif %}#}
+{#                </a>#}
+{#                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">#}
+{#                    <a class="dropdown-item" href="#">Change Password</a>#}
+{#                    <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{#</nav>#}
 
 {% block content %}
 
@@ -208,5 +2323,6 @@
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/product_page.js' %}"></script>
 </body>
 </html>

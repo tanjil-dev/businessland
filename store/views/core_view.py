@@ -32,26 +32,30 @@ class Store(View):
         cartItems = data['cartItems']
         order = data['order']
         items = data['items']
+        # tags = Tag.objects.all()
 
         products = Product.objects.all()
         context = {
             'products': products,
-            'cartItems': cartItems
+            'cartItems': cartItems,
+            # 'tags': tags
         }
         return render(request, template_name=self.template, context=context)
 
 
 class ProductView(View):
     template = 'store/product_page.html'
-
+    menu = []
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
 
         products = Product.objects.all()
+        brands = Brand.objects.all()
         context = {
             'products': products,
-            'cartItems': cartItems
+            'cartItems': cartItems,
+            'brands': brands
         }
         return render(request, template_name=self.template, context=context)
 

@@ -4,13 +4,47 @@
     <br>
     <br>
     <br>
+
+
+    <div class="after-header p-tb-10">
+        <div class="container">
+            <div id="collage-1" class="collage row">
+                <div class="col-md-6 col-sm-12 col-xs-12 col-md-push-3 banner-slider">
+                    <div class="item mySlides banner-image large" style="display: block;">
+                        <a href="https://www.startech.com.bd/product/search?search=zyxel&amp;category_id=0"><img
+                                src="https://www.startech.com.bd/image/catalog/home/banner/zyxel-web.jpg" alt="zyxel"
+                                class="img-responsive"></a>
+                    </div>
+                    <div class="slider-dot"><span class="dot active"></span></div>
+                </div>
+                <div class="col-md-3 col-xs-6 first col-md-pull-6">
+                    <div class="item banner-image">
+                        <a href="https://www.startech.com.bd/information/offer/info?offer_id=315"><img
+                                src="https://www.startech.com.bd/image/catalog/home/banner/intel-offer.jpg"
+                                alt="intel offer " class="img-responsive"></a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-6 last">
+                    <div class="item banner-image">
+                        <a href="https://www.startech.com.bd/razer-blade-15-studio-edition-touch-laptop"><img
+                                src="https://www.startech.com.bd/image/catalog/home/collage/group-2-271x350/Untitled-1.jpg"
+                                alt="blade 15 studio" class="img-responsive"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+    <h2 id="product" align="center" class="font-weight-bold display-4 ">Product <span
+            style="color: lightseagreen">Collections</span></h2>
+    <br><br><br>
     <div class="container">
         <div class="row">
             {% for product in products %}
                 <div class="col-lg-4">
                     <img class="thumbnail" src="{{ product.imageURL }}" alt="">
                     <div class="box-element product">
-                        <h6><strong>{{ product.name }}</strong></h6>
+                        <h5><strong>{{ product.name }}</strong></h5>
                         <hr>
 
                         <button data-product="{{ product.id }}" data-action="add"
@@ -18,7 +52,8 @@
                         </button>
 
                         <a class="btn btn-outline-success" href="{% url 'product_view' product.id %}">View</a>
-                        <h4 style="display: inline-block; float: right"><strong>Tk {{ product.price|floatformat:2 }}</strong></h4>
+                        <h5 style="display: inline-block; float: right">
+                            <strong>Tk {{ product.price|floatformat:2 }}</strong></h5>
                     </div>
                 </div>
             {% endfor %}
