@@ -1,5 +1,6 @@
 from django.urls import path
-
+from django.conf.urls import url
+from store.api.core_api import SearchAPI
 from store.views.core_view import *
 
 urlpatterns = [
@@ -20,4 +21,8 @@ urlpatterns = [
     path('logout/', logOut.as_view(), name="logout"),
     path('register/', registerPage.as_view(), name="register"),
     path('demo/', demo.as_view(), name="demo"),
+
+    # API
+    url(r'^api/search$', SearchAPI.as_view(),
+         name='search'),
 ]
