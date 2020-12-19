@@ -16,9 +16,11 @@
     <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/product_page.css' %}">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    {#    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">#}
+    {#    <link rel="stylesheet" href="/resources/demos/style.css">#}
+    {% block css_block %}
 
+    {% endblock %}
     <script type="text/javascript">
         var user = '{{ request.user }}'
 
@@ -83,38 +85,44 @@
                 {#                   href="tool/pc_builder"><span>PC Builder</span></a>#}
                 {#                <a class="item offer txt" href="/emi-terms"><span>EMI</span></a>#}
                 {#                <a class="item offer txt" href="/information/offer"><span>Offers</span></a>#}
-                <span class="user item"><a href="account/account"><i
+                <span class="user item"><a href="#"><i
                         class="fa fa-user-o"></i></a><span class="hidden-xs"><a href="{% url 'register' %}">Register</a> or <a
                         href="{% url 'login' %}">Login</a></span></span>
             </div>
             <div class="clear"></div>
         </div>
     </div>
+
+
     <div class="main-header">
         <div class="container">
             <div class="row menu">
                 <div class="col-xs-6 col-sm-2 col-md-2 no-pad-xs">
                     <div id="nav-toggler"><span></span></div>
                     <div class="logo">
-                        <a href="https://www.businesslandbd.com"><img style="height: 55px; width: 55px"
-                                                                      src="{% static 'images/businessland_logo.png' %}"></a>
+                        <a href="#"><img style="height: 55px; width: 55px"
+                                         src="{% static 'images/businessland_logo.png' %}"></a>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 search-wrap">
                     <div id="search1" class="search">
-                        <div class="input-group">
-                            <input type="text" name="search" id="searchinput" value="" placeholder="Search"
-                                   class="form-control" autocomplete="off"/>
-                            <ul class="list-group" id="result"></ul>
-                            <button style="height: 45px;width: 50px;" type="button" class="btn btn-info"><i
-                                    class="fa fa-search"></i></button>
+                        <div class="form-group xc">
+                            <form action="{% url 'search-result' %}" method="get">
+                                <input type="text" name="search" id="search" value="" placeholder="Search"
+                                       class="form-control" autocomplete="off"/>
+                                <button style="height: 45px;width: 50px;" type="submit" class="btn btn-info"><i
+                                        class="fa fa-search"></i></button>
+                                <ul style="background-color: black;position:absolute" class="list-group">
+                                    <li id="result"></li>
+                                </ul>
+                            </form>
                         </div>
                         <div class="clear"></div>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-4 col-md-4 no-pad-xs">
                     <div class="icons">
-                        <span class="search-toggle"><i class="fa fa-search"></i></span>
+
                         {#                        <span class="compare" id="compare" title="Compare (0)"><a href="product/compare"><i class="fa fa-sliders"></i></a><span class="value">0</span></span>#}
                         <span class="cart" id="cart">
                                         <a href="{% url 'cart' %}">
@@ -133,6 +141,8 @@
             </div>
         </div>
     </div>
+
+
     <div class="main-nav">
         <div class="container">
             <nav class="nav" id="main-nav">
@@ -2186,6 +2196,8 @@
             </nav>
         </div>
     </div>
+
+
 </header>
 
 {#<div style="margin-top: 7px" id="header" class="top-up">#}
@@ -2321,9 +2333,197 @@
 </footer>
 <script>
     var search = "{% url 'search' %}";
-    var result = $('#result').val();
+    var result = $('#result');
     var searchField = $('#search').val();
     var input_id = 'id_wallet';
+
+$(function() {
+    function a(a) {
+        var b = this;
+        a.forEach(function(a) {
+            var c = $(a.toggle);
+            c.on("click", function() {
+                c.hasClass("close") ? b.hide(a) : b.show(a)
+            })
+        })
+    }
+    function d(a) {
+        var b = this;
+        b.elm = a;
+        b.slides = [];
+        b.dots = [];
+        var c = $("<div>", {
+            "class": "slider-dot"
+        });
+        a.find(".mySlides").each(function(a, d) {
+            d = $(d);
+            b.slides[a] = d;
+            var e = $("<span>", {
+                "class": "dot"
+            });
+            c.append(e);
+            b.dots[a] = e;
+            d.hide();
+            e.on("click", function() {
+                b.showSlides(a)
+            })
+        });
+        a.append(c);
+        b.index = 0;
+        b.showSlides(0)
+    }
+    function c(a) {
+        var b = a.position
+          , c = '<a href="' + a.url + '"><img src="' + a.image + '" alt="' + a.title + '" class="img-responsive"></a>';
+        1 == b ? setTimeout(function() {
+            var a = new Popup(c);
+            a.render();
+            localStorage.showed = n;
+            setTimeout(function() {
+                a.close()
+            }, 14E3)
+        }, 6E3) : $(".ads-pos-" + b).html(c)
+    }
+    var e = $("html")
+      , k = $("body")
+      , l = $(".overlay")
+      , h = a.prototype;
+    h.show = function(a) {
+        this.active && this.hide(this.active);
+        var b = $(a.target)
+          , c = $(a.toggle);
+        a.overlay && l.addClass("open");
+        a.no_scroll && $("body").addClass("no-scroll");
+        c.addClass("close");
+        b.addClass("open");
+        this.active = a
+    }
+    ;
+    h.hide = function(a) {
+        if (a = a || this.active) {
+            var b = $(a.target);
+            $(a.toggle).removeClass("close");
+            b.removeClass("open");
+            l.removeClass("open");
+            $("body").removeClass("no-scroll");
+            this.active = a
+        }
+    }
+    ;
+    var g = new a([{
+        toggle: "#nav-toggler",
+        target: "#main-nav",
+        overlay: !0,
+        no_scroll: !0
+    }, {
+        toggle: ".search-toggle",
+        target: ".search-wrap"
+    }, {
+        toggle: ".cart-toggler",
+        target: "#cart"
+    }, {
+        toggle: "#lc-toggle, .lc-close",
+        target: "#column-left",
+        overlay: !0,
+        no_scroll: !0
+    }]);
+    l.on("click", function() {
+        g.hide()
+    });
+    var q = $("#cart");
+    $(document).on("click", function(a) {
+        a = $(a.target);
+        0 === q.has(a).size() && g.active && ".cart-toggler" === g.active.toggle && g.hide();
+        a.data("dismiss") && a.parents("." + a.data("dismiss")).remove()
+    });
+    $(".has-child a").on("click", function(a) {
+        $(this).parent().toggleClass("open");
+        var b = $(a.target);
+        (isMobile() && b.is(".has-child > a") || b.is(".responsive-menu > .has-child > a")) && a.preventDefault()
+    });
+    "" == $(".category-description").text() && $(".category-description").remove();
+    window.addClearFix = function() {
+        var a = $("#column-right, #column-left").size();
+        2 == a ? $("#content .product-layout:nth-child(2n+2)").after('<div class="clearfix visible-md visible-sm"></div>') : 1 == a ? $("#content .product-layout:nth-child(3n+3)").after('<div class="clearfix visible-lg"></div>') : $("#content .product-layout:nth-child(4n+4)").after('<div class="clearfix"></div>')
+    }
+    ;
+    addClearFix();
+    var b = $("#list-view")
+      , f = $("#grid-view");
+    h = {
+        list: function() {
+            b.addClass("active");
+            f.removeClass("active");
+            $("#content .row > .product-layout").attr("class", "col-xs-12 col-md-12 product-layout list");
+            localStorage.setItem("display", "list")
+        },
+        grid: function() {
+            $(this).addClass("active");
+            $("#list-view").removeClass("active");
+            cols = $("#column-right, #column-left").size();
+            2 == cols ? $("#content .product-layout").attr("class", "col-xs-12 col-md-6 product-layout grid") : 1 == cols ? $("#content .product-layout").attr("class", "col-xs-12 col-md-4 product-layout grid") : $("#content .product-layout").attr("class", "col-xs-12 col-md-3 product-layout grid");
+            localStorage.setItem("display", "gird")
+        }
+    };
+    b.on("click", h.list);
+    f.on("click", h.grid);
+    b.size() && "list" === localStorage.getItem("display") && h.list();
+    d.prototype.showSlides = function(a) {
+        this.timer && clearTimeout(this.timer);
+        a >= this.slides.length && (a = 0);
+        this.slides[this.index].hide();
+        this.slides[a].show();
+        this.dots[this.index].removeClass("active");
+        this.dots[a].addClass("active");
+        this.index = a;
+        this.timer = setTimeout(this.showSlides.bind(this, ++a), 5E3)
+    }
+    ;
+    $(".banner-slider").each(function() {
+        new d($(this))
+    });
+    window.addEventListener("scroll", function() {
+        165 < e.scrollTop() ? k.addClass("on-scroll") : k.removeClass("on-scroll")
+    });
+    $(".to-top").on("click", function(a) {
+        a.preventDefault();
+        $("html").scrollTo(0, 600)
+    });
+    var n = (new Date).getTime();
+    h = localStorage.showed;
+    var m = localStorage.lastVisited
+      , p = [];
+    h = parseInt(h);
+    h = isNaN(h) ? null : h;
+    m = parseInt(m);
+    m = isNaN(m) ? null : m;
+    var t = app.popupDuration ? app.popupDuration : 12;
+    app.enablePopup && m && 36E4 > n - m && (!h || n - h > 36E5 * t) && p.push(1);
+    $(".ads").each(function() {
+        p.push($(this).attr("data-position"))
+    });
+    if (p.length) {
+        var r = "device_type=" + (isMobile() ? 1 : 3);
+        p.forEach(function(a) {
+            r += "&ads_position[]=" + a
+        });
+        $.ajax({
+            url: "api/ads",
+            data: r,
+            method: "post",
+            dataType: "json",
+            success: function(a) {
+                a.forEach(function(a) {
+                    c(a)
+                });
+                (a = a[1]) && a.image && c(a.image, a.title, a.url)
+            }
+        })
+    }
+    h = (new Date).getHours();
+    9 <= h && 21 >= h && $(".svg-icon svg").show();
+    localStorage.lastVisited = n
+});
 
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -2343,5 +2543,11 @@
 <script type="text/javascript" src="{% static 'js/csrf.ajax.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+{#<script type="text/javascript" src="{% static 'js/product_page.js' %}"></script>#}
+
+{% block js_block %}
+
+{% endblock %}
+
 </body>
 </html>

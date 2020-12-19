@@ -1,0 +1,17 @@
+/* single page */
+
+.single-product{
+    margin-top: 100px !important;
+    margin-bottom: 100px !important;
+}
+
+.col-md-7 h2{
+    color: #555;
+}
+
+.price{
+    color: #FE980F;
+    font-size: 26px;
+    font-weight: bold;
+    padding-top: 20px;
+}

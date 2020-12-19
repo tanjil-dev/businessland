@@ -113,19 +113,19 @@ $(function () {
 
 /* sticky header */
 
-var height = $('.navbar').height();
-
-$(window).scroll(function () {
-    if ($(this).scrollTop() > height) {
-        $('.navbar').addClass('fixed');
-    } else {
-        $('.navbar').removeClass('fixed');
-    }
-});
-
-$('.carousel').carousel({
-    interval: 1000 * 2
-});
+// var height = $('.navbar').height();
+//
+// $(window).scroll(function () {
+//     if ($(this).scrollTop() > height) {
+//         $('.navbar').addClass('fixed');
+//     } else {
+//         $('.navbar').removeClass('fixed');
+//     }
+// });
+//
+// $('.carousel').carousel({
+//     interval: 1000 * 2
+// });
 
 // $(document).ready(function () {
 //     $('#search').keyup(function () {
@@ -144,33 +144,33 @@ $('.carousel').carousel({
 //     });
 // });
 
-// $(document).ready(function () {
-//     $(function () {
-//         $("#" + input_id).autocomplete({
-//             source: function (request, response) {
-//                 var source = [];
-//                 var input_val = $("#" + input_id).val();
-//
-//                 $.ajax({
-//                     url: GET_API_URL + "?partial_data=" + input_val.trim(),
-//                     type: 'GET',
-//                     dataType: "json"
-//                 }).done(function (res) {
-//                     for (var i = 0; i < res.data.length; i++) {
-//                         source.push(res.data[i].suggestion);
-//                     }
-//
-//                     response(source);
-//                 });
-//
-//             },
-//             minLength: 1,
-//             select: function (event, ui) {
-//                 event.preventDefault();
-//                 var sp = ui.item.value.split("-");
-//                 $("#" + input_id).val(sp[0].trim());
-//                 console.log(sp[0].trim());
-//             }
-//         });
-//     });
-// });
+$(document).ready(function () {
+    $(function () {
+        $("#" + input_id).autocomplete({
+            source: function (request, response) {
+                var source = [];
+                var input_val = $("#" + input_id).val();
+
+                $.ajax({
+                    url: search + "?partial_data=" + input_val,
+                    type: 'get',
+                    dataType: "json"
+                }).done(function (res) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        source.push(res.data[i].suggestion);
+                    }
+
+                    response(source);
+                });
+
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                event.preventDefault();
+                var sp = ui.item.value.split("-");
+                $("#" + input_id).val(sp[0].trim());
+                console.log(sp[0].trim());
+            }
+        });
+    });
+});

@@ -28,3 +28,14 @@ class OrderForm(ModelForm):
     class Meta:
         model = OrderItem
         fields = ['status',]
+
+class AddOrderItemForm(ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'status', 'order', 'customer', 'note', 'quantity']
+
+class AddProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name','brand', 'description', 'digital', 'image', 'price']
+

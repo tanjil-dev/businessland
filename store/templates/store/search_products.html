@@ -1,11 +1,11 @@
 {% extends 'store/main.html' %}
 {% load static %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'css/search_products.css' %}">
+{% endblock %}
 {% block content %}
-    <br><br><br>
-    <h2 id="product" align="center" class="font-weight-bold display-4 ">Product <span
-            style="color: lightseagreen">Collections</span></h2>
-    <br><br><br>
-    <div class="container">
+
+    <div class="container search-product">
         <div class="row">
             {% for product in products %}
                 <div class="col-lg-4">
@@ -26,5 +26,12 @@
             {% endfor %}
         </div>
     </div>
-    <br><br><br><br><br><br>
+
+    {#    {% for o in results %}#}
+    {#        <ol>#}
+    {#            <li>{{ o.name }}</li>#}
+    {#            <li>{{ o.price }}</li>#}
+    {#            <li>{{ o.description }}</li>#}
+    {#        </ol>#}
+    {#    {% endfor %}#}
 {% endblock content %}
