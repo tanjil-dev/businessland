@@ -21,6 +21,9 @@ urlpatterns = [
     path('logout/', logOut.as_view(), name="logout"),
     path('register/', registerPage.as_view(), name="register"),
     path('demo/', demo.as_view(), name="demo"),
+    path('search-result/', SearchProducts.as_view(), name="search-result"),
+    path('add-order-item/', AddOrderItem.as_view(), name="add-order-item"),
+    path('add-product-item/', AddProduct.as_view(), name="add-product-item"),
 
     # API
     url(r'^api/search$', SearchAPI.as_view(),

@@ -115,13 +115,15 @@ class OrderItem(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS, default=STATUS[0][0])
     note = models.CharField(max_length=1000, null=True)
+
+
     @property
     def get_total(self):
         total = self.product.price * self.quantity
         return total
 
     def __str__(self):
-        return self.product.name
+        return self.product
 
 
 class ShippingAddress(models.Model):

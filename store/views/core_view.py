@@ -46,6 +46,7 @@ class Store(View):
 class ProductView(View):
     template = 'store/product_page.html'
     menu = []
+
     def get(self, request):
         data = cartData(request)
         cartItems = data['cartItems']
@@ -58,6 +59,26 @@ class ProductView(View):
             'brands': brands
         }
         return render(request, template_name=self.template, context=context)
+
+
+class ProductAddView(View):
+    template = "store/add_product.html"
+
+    def get(self, request):
+        return render(request, template_name=self.template)
+
+    def post(self, request):
+        return render(request, template_name=self.template)
+
+
+class OrderAddView(View):
+    template = "store/add_order.html"
+
+    def get(self, request):
+        return render(request, template_name=self.template)
+
+    def post(self, request):
+        return render(request, template_name=self.template)
 
 
 class Cart(View):
@@ -258,7 +279,7 @@ class adminPanel(View):
 
     @method_decorator(login_required(login_url='login'))
     def get(self, request):
-        orderItems = OrderItem.objects.all()
+        orderItems = OrderItem.objects.all().order_by('-date_added')
         customers = Customer.objects.all()
 
         total_customer = customers.count()
@@ -321,7 +342,7 @@ def updateOrder(request, pk):
 def deleteOrder(request, pk):
     template_name = 'store/delete_order.html'
     orderItems = OrderItem.objects.get(id=pk)
-    
+
     if request.method == "POST":
         orderItems.delete()
         return redirect('admin_panel')
@@ -335,18 +356,61 @@ def deleteOrder(request, pk):
 # View
 class demo(View):
     template = 'store/demo.html'
-    name = None
-    price = None
 
     def get(self, request):
-        if User.is_superuser:
-            self.name = Product.objects.values('name')
-        else:
-            self.price = Product.objects.values('price')
-        order = Order.objects.all()
+        search_body = request.GET['search']
+        result = Product.objects.filter(name__istartswith=search_body)
         context = {
-            'names': self.name,
-            'prices': self.price,
-            'order': order
+            'results': result
+        }
+        return render(request, template_name=self.template, context=context)
+
+
+class SearchProducts(View):
+    template = 'store/search_products.html'
+
+    def get(self, request):
+        search_body = request.GET['search']
+        result = Product.objects.filter(name__istartswith=search_body)
+        context = {
+            'products': result
+        }
+        return render(request, template_name=self.template, context=context)
+
+
+class AddProduct(View):
+    template = 'store/add_product.html'
+    form = AddProductForm()
+
+    def get(self, request):
+        context = {
+            'form': self.form
+        }
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request):
+        product = Product()
+        form = AddProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+        context = {
+            'form': self.form
+        }
+        return render(request, template_name=self.template, context=context)
+
+
+class AddOrderItem(View):
+    template = 'store/add_order.html'
+    form = AddOrderItemForm()
+
+    def get(self, request):
+        context = {
+            'form': self.form
+        }
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request):
+        context = {
+            'form': self.form
         }
         return render(request, template_name=self.template, context=context)
