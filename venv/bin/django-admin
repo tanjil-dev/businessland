@@ -1,4 +1,4 @@
-#!/home/ovi/PycharmProjects/ecom/venv/bin/python
+#!/home/ovi/PycharmProjects/business_land/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
